@@ -48,10 +48,10 @@ colcon build --symlink-install
 
 ### trabajo
 
-# 1.1  Sacar medidas de solidworks, del chassis y ruedas como figuras geometricas simples
-# 2.2  Llevar los centro de referencia al centro geometris de cada parte
-# 2.3  Descar los archivos en .stl, chassis, ruedas y acoples
-# 2.4  Por ahora no se considerar los acoples
-# 2.5  Crear el xacro con figuras geometricas simples y pobrar en rviz
-# 2.6  Reemplzar las figuras geometricas simples con mesh
-# 2.7  Probar con una rueda  reutilziar con xacros las demás ruedas
+#### 1.1  Sacar medidas de solidworks, del chassis y ruedas como figuras geometricas simples
+#### 2.2  Llevar los centro de referencia al centro geometris de cada parte
+#### 2.3  Descar los archivos en .stl, chassis, ruedas y acoples
+#### 2.4  Por ahora no se considerar los acoples
+#### 2.5  Crear el xacro con figuras geometricas simples y pobrar en rviz
+#### 2.6  Reemplzar las figuras geometricas simples con mesh
+#### 2.7  Probar con una rueda  reutilziar con xacros las demás ruedas
