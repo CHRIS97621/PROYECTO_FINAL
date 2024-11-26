@@ -12,7 +12,7 @@ def generate_launch_description():
     #~~~~~~~~~~~~~~~~~~~~~~~~ PATHS ~~~~~~~~~~~~~~~~~~~~~~~~~~~+
     package_share = get_package_share_directory(package_name)
     
-    robot_desc_path = PathJoinSubstitution([package_share,'urdf', 'agro2.urdf.xacro'])
+    robot_desc_path = PathJoinSubstitution([package_share,'urdf', 'agro.urdf.xacro'])
     rviz_file = PathJoinSubstitution([package_share,'rviz','display.rviz'])
     #rviz_file = PathJoinSubstitution(['rviz','display.rviz'])
     # Convierto el archivo xacro a un string
