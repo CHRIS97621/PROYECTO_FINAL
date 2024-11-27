@@ -44,6 +44,49 @@
         <child link="chassis_link"/>
         
     </joint>
+    
+    <!-- soporte-->
+    <link name="soporte_link">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <!--box size="0.5 0.316 0.16"/-->
+                <mesh filename="file://$(find agro_description)/mesh/soporte.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="steel">
+                <color rgba="0.70 0.70 0.70 1.0"/> <!-- Color acero -->
+            </material>
+        </visual>
+    </link>
+
+    <joint name="base_soporte_joint" type="fixed">
+        <origin xyz="0.21 0.0 0.16" rpy="0.0 0.0 0.0"/>
+        <parent link="base_link"/>
+        <child link="soporte_link"/>
+        
+    </joint>
+    
+
+    <!-- base_camara-->
+    <link name="base_camara_link">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <!--box size="0.5 0.316 0.16"/-->
+                <mesh filename="file://$(find agro_description)/mesh/base_camara.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="steel">
+                <color rgba="0.76 0.60 0.42 1.0"/> <!-- Color madera -->
+            </material>
+        </visual>
+    </link>
+
+    <joint name="base_camara_joint" type="fixed">
+        <origin xyz="0.21 0.0 0.76" rpy="0.0 0.0 0.0"/>
+        <parent link="base_link"/>
+        <child link="base_camara_link"/>
+        
+    </joint>
 
 
     <!-- Wheels-->
