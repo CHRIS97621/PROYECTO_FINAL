@@ -55,3 +55,13 @@ colcon build --symlink-install
 #### 2.5  Crear el xacro con figuras geometricas simples y pobrar en rviz
 #### 2.6  Reemplzar las figuras geometricas simples con mesh
 #### 2.7  Probar con una rueda  reutilziar con xacros las demás ruedas
+
+### Simulación
+
+```bash
+ros2 launch agro_gazebo sim.launch.py
+```
+
+```bash
+run teleop_twist_keyboard teleop_twist_keyboard --ros-args -p stamped:=true -p use_sim_time:=true --remap /cmd_vel:=/agro_base_controller/cmd_vel
+```

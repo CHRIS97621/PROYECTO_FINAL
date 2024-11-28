@@ -1,17 +1,12 @@
 from launch import LaunchDescription
 
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import (
-    EnvironmentVariable,
-    LaunchConfiguration,
-    PathJoinSubstitution,
-    TextSubstitution,
-)
-from launch.actions import IncludeLaunchDescription
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
+from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
 from launch_ros.substitutions import FindPackageShare
+from launch_ros.descriptions import ParameterValue
 
-
-
+from ament_index_python.packages import get_package_share_directory
 def generate_launch_description():
 
     #~~~~~~~~~~~~~~~~~~ PACKAGES ~~~~~~~~~~~~~~~
@@ -24,6 +19,9 @@ def generate_launch_description():
     
     path_world_default = PathJoinSubstitution([FindPackageShare(package_world),"world","test.sdf",])
 
+    world_str = ParameterValue(path_world_default,value_type=str)
+
+    packagepath = get_package_share_directory('agro_gazebo')  
     #~~~~~~~~~~~~~~~~~~~~~~~~ ARGUMENTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~+
 
     arg_world = DeclareLaunchArgument(
@@ -34,12 +32,12 @@ def generate_launch_description():
 
     config_world = LaunchConfiguration('world')
 
-    #~~~~~~~~~~~~~~~~~~~~~~~~ gz sim ~~~~~~~~~~~~~~~~~~~~~~~~~~~+
+    #~~~~~~~~~~~~~~~~~~~~~~~~ GZ SIM ~~~~~~~~~~~~~~~~~~~~~~~~~~~+
+    gz_args = f"-r {world_str}"
+
     gz_sim = IncludeLaunchDescription(PythonLaunchDescriptionSource(path_gz_sim),
-        launch_arguments={
-            "gz_args": [path_world_default],
-            "on_exit_shutdown": "True",
-        }.items(),
+        launch_arguments=[('gz_args',packagepath + '/world/test.sdf -r -v4 ')]
+        
     )
 
     return LaunchDescription([

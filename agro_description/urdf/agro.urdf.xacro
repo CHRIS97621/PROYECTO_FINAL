@@ -9,7 +9,7 @@
   <xacro:property name="wheel_distance" value="0.225"/>-->
 
     <xacro:include filename="$(find agro_description)/urdf/xacro/wheel.xacro"/>
-
+    <xacro:include filename="$(find agro_description)/urdf/xacro/gazebo.xacro"/>
      <!-- Base-->
     <link name="base_link">
         <visual>
@@ -22,6 +22,15 @@
                 <color rgba="0.76 0.60 0.42 1.0"/> <!-- Color madera -->
             </material>
         </visual>
+        <xacro:inertial_box mass="${base_mass}" x="${base_altura}" y="${base_largo}" z="${base_ancho}">
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        </xacro:inertial_box>
+        <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="${base_altura} ${base_largo} ${base_ancho}"/>
+            </geometry>
+        </collision>
     </link>
  
     <!-- Chassis-->
@@ -36,6 +45,15 @@
                 <color rgba="0.70 0.70 0.70 1.0"/> <!-- Color acero -->
             </material>
         </visual>
+        <xacro:inertial_box mass="${chassis_mass}" x="${chassis_altura}" y="${chassis_largo}" z="${chassis_ancho}">
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        </xacro:inertial_box>
+        <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="${chassis_altura} ${chassis_largo} ${chassis_ancho}"/>
+            </geometry>
+        </collision>
     </link>
 
     <joint name="base_chassis_joint" type="fixed">
@@ -46,15 +64,14 @@
     </joint>
     
     <!-- soporte-->
-    <link name="soporte_link">
+    <!--link name="soporte_link">
         <visual>
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
             <geometry>
-                <!--box size="0.5 0.316 0.16"/-->
                 <mesh filename="file://$(find agro_description)/mesh/soporte.stl" scale="0.001 0.001 0.001"/>
             </geometry>
             <material name="steel">
-                <color rgba="0.70 0.70 0.70 1.0"/> <!-- Color acero -->
+                <color rgba="0.70 0.70 0.70 1.0"/> 
             </material>
         </visual>
     </link>
@@ -64,19 +81,40 @@
         <parent link="base_link"/>
         <child link="soporte_link"/>
         
-    </joint>
+    </joint-->
     
-
-    <!-- base_camara-->
-    <link name="base_camara_link">
+    <!-- soporte-->
+    <!--link name="soporte_link">
         <visual>
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
             <geometry>
-                <!--box size="0.5 0.316 0.16"/-->
+                <box size="0.5 0.316 0.16"/>
+                <mesh filename="file://$(find agro_description)/mesh/soporte.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="steel">
+                <color rgba="0.70 0.70 0.70 1.0"/>
+            </material>
+        </visual>
+    </link>
+
+    <joint name="base_soporte_joint" type="fixed">
+        <origin xyz="0.21 0.0 0.16" rpy="0.0 0.0 0.0"/>
+        <parent link="base_link"/>
+        <child link="soporte_link"/>
+        
+    </joint-->
+    
+
+    <!-- base_camara-->
+    <!--link name="base_camara_link">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+              
                 <mesh filename="file://$(find agro_description)/mesh/base_camara.stl" scale="0.001 0.001 0.001"/>
             </geometry>
             <material name="steel">
-                <color rgba="0.76 0.60 0.42 1.0"/> <!-- Color madera -->
+                <color rgba="0.76 0.60 0.42 1.0"/> 
             </material>
         </visual>
     </link>
@@ -86,7 +124,7 @@
         <parent link="base_link"/>
         <child link="base_camara_link"/>
         
-    </joint>
+    </joint-->
 
 
     <!-- Wheels-->
@@ -99,6 +137,6 @@
     <xacro:wheel_joint prefix="front_right" x="0.210" y="-0.224" z="-0.1376"/>
     <xacro:wheel_joint prefix="near_left" x="-0.210" y="0.224" z="-0.1376"/>
     <xacro:wheel_joint prefix="near_right" x="-0.219" y="-0.224" z="-0.1376"/>
-    
-    <!-- Base camera-->
+
+    <xacro:ros2_control/>
 </robot>
