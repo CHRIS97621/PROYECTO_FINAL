@@ -134,4 +134,6 @@
     <xacro:wheel_joint prefix="near_right" x="-0.219" y="-0.224" z="-0.1376"/>
 
     <xacro:ros2_control/>
+
+    <xacro:plugins_gazebo/>
 </robot>
