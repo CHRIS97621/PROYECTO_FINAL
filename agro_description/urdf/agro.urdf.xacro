@@ -4,9 +4,7 @@
   <!-- ************************ -->
   <!--  variables -->
   <!-- ************************ -->
-  <!--<xacro:property name="wheel_radius" value="0.0615"/>
-  <xacro:property name="base_width" value="0.316"/>
-  <xacro:property name="wheel_distance" value="0.225"/>-->
+  
 
     <xacro:include filename="$(find agro_description)/urdf/xacro/wheel.xacro"/>
     <xacro:include filename="$(find agro_description)/urdf/xacro/gazebo.xacro"/>
@@ -22,13 +20,13 @@
                 <color rgba="0.76 0.60 0.42 1.0"/> <!-- Color madera -->
             </material>
         </visual>
-        <xacro:inertial_box mass="${base_mass}" x="${base_altura}" y="${base_largo}" z="${base_ancho}">
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <xacro:inertial_box mass="${base_mass}" x="${base_largo}" y="${base_ancho}" z="${base_altura}">
+            <origin xyz="0.0 0.0 ${(base_altura)/2}" rpy="0.0 0.0 0.0"/>
         </xacro:inertial_box>
         <collision>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <origin xyz="0.0 0.0 ${(base_altura)/2}" rpy="0.0 0.0 0.0"/>
             <geometry>
-                <box size="${base_altura} ${base_largo} ${base_ancho}"/>
+                <box size="${base_largo} ${base_ancho} ${base_altura}"/>   <!--0.5 0.316 0.16-->
             </geometry>
         </collision>
     </link>
@@ -45,13 +43,13 @@
                 <color rgba="0.70 0.70 0.70 1.0"/> <!-- Color acero -->
             </material>
         </visual>
-        <xacro:inertial_box mass="${chassis_mass}" x="${chassis_altura}" y="${chassis_largo}" z="${chassis_ancho}">
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <xacro:inertial_box mass="${chassis_mass}" x="${chassis_largo}" y="${chassis_ancho}" z="${chassis_altura}">
+            <origin xyz="0.0 0.0 ${-(chassis_altura)/2}" rpy="0.0 0.0 0.0"/>
         </xacro:inertial_box>
         <collision>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <origin xyz="0.0 0.0 ${-(chassis_altura)/2}" rpy="0.0 0.0 0.0"/>
             <geometry>
-                <box size="${chassis_altura} ${chassis_largo} ${chassis_ancho}"/>
+                <box size="${chassis_largo} ${chassis_ancho} ${chassis_altura}"/>
             </geometry>
         </collision>
     </link>
@@ -63,8 +61,8 @@
         
     </joint>
     
-    <!-- soporte-->
-    <!--link name="soporte_link">
+    <!-- soporte -->
+    <link name="soporte_link">
         <visual>
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
             <geometry>
@@ -74,27 +72,15 @@
                 <color rgba="0.70 0.70 0.70 1.0"/> 
             </material>
         </visual>
-    </link>
-
-    <joint name="base_soporte_joint" type="fixed">
-        <origin xyz="0.21 0.0 0.16" rpy="0.0 0.0 0.0"/>
-        <parent link="base_link"/>
-        <child link="soporte_link"/>
-        
-    </joint-->
-    
-    <!-- soporte-->
-    <!--link name="soporte_link">
-        <visual>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <xacro:inertial_box mass="${soporte_mass}" x="${soporte_largo}" y="${soporte_ancho}" z="${soporte_altura}">
+            <origin xyz="0.0 0.0 0.30" rpy="0.0 0.0 0.0"/>
+        </xacro:inertial_box>
+        <collision>
+            <origin xyz="0.0 0.0 0.30" rpy="0.0 0.0 0.0"/>
             <geometry>
-                <box size="0.5 0.316 0.16"/>
-                <mesh filename="file://$(find agro_description)/mesh/soporte.stl" scale="0.001 0.001 0.001"/>
+                <box size="${soporte_largo} ${soporte_ancho} ${soporte_altura}"/>
             </geometry>
-            <material name="steel">
-                <color rgba="0.70 0.70 0.70 1.0"/>
-            </material>
-        </visual>
+        </collision>
     </link>
 
     <joint name="base_soporte_joint" type="fixed">
@@ -102,21 +88,30 @@
         <parent link="base_link"/>
         <child link="soporte_link"/>
         
-    </joint-->
+    </joint>
     
-
+    
     <!-- base_camara-->
-    <!--link name="base_camara_link">
+    <link name="base_camara_link">
         <visual>
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
             <geometry>
               
                 <mesh filename="file://$(find agro_description)/mesh/base_camara.stl" scale="0.001 0.001 0.001"/>
             </geometry>
-            <material name="steel">
-                <color rgba="0.76 0.60 0.42 1.0"/> 
+            <material name="wood">
+                <color rgba="0.76 0.60 0.42 1.0"/> <!-- Color madera -->
             </material>
         </visual>
+        <xacro:inertial_box mass="${base_camara_mass}" x="${base_camara_largo}" y="${base_camara_ancho}" z="${base_camara_altura}">
+            <origin xyz="0.01 0.0 0.0015" rpy="0.0 0.0 0.0"/>
+        </xacro:inertial_box>
+        <collision>
+            <origin xyz="0.01 0.0 0.0015" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="${base_camara_largo} ${base_camara_ancho} ${base_camara_altura}"/>
+            </geometry>
+        </collision>
     </link>
 
     <joint name="base_camara_joint" type="fixed">
@@ -124,8 +119,8 @@
         <parent link="base_link"/>
         <child link="base_camara_link"/>
         
-    </joint-->
-
+    </joint>
+    
 
     <!-- Wheels-->
     <xacro:wheel_link prefix="front_left" />
