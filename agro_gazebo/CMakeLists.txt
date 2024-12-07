@@ -12,6 +12,7 @@ find_package(std_msgs REQUIRED)
 install(DIRECTORY
   world
   launch
+  models
   DESTINATION share/${PROJECT_NAME}
 )
 

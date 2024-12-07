@@ -17,7 +17,7 @@ def generate_launch_description():
     #~~~~~~~~~~~~~~~~~~~~~~~~ PATHS ~~~~~~~~~~~~~~~~~~~~~~~~~
     path_gz_sim = PathJoinSubstitution([FindPackageShare(package_gz),"launch","gz_sim.launch.py",])
     
-    path_world_default = PathJoinSubstitution([FindPackageShare(package_world),"world","test.sdf",])
+    path_world_default = PathJoinSubstitution([FindPackageShare(package_world),"models","parcela.sdf",])
 
     world_str = ParameterValue(path_world_default,value_type=str)
 

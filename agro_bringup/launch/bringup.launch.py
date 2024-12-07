@@ -51,11 +51,14 @@ def generate_launch_description():
     joint_state_broadcaster_spawner = Node(
         package="controller_manager",
         executable="spawner",
+        parameters=[
+            {'use_sim_time': True}],
         arguments=[
             "joint_state_broadcaster",
             "--controller-manager-timeout",
             "120"
         ],
+        output= "screen"
     )
 
     robot_controller_spawner = Node(
@@ -67,6 +70,8 @@ def generate_launch_description():
             "--controller-manager-timeout",
             "120"
         ],
+        parameters=[
+            {'use_sim_time': True}],
         output= "screen"
     )
     delay_robot_controller_spawner_after_joint_state_broadcaster_spawner = RegisterEventHandler(

@@ -35,7 +35,7 @@
     <gazebo reference="base_link">
         <sensor name="tb3_gps" type="navsat">
           <always_on>true</always_on>
-          <update_rate>1</update_rate>
+          <update_rate>50</update_rate>
           <pose>0 0 0 0 0 0</pose>
           <!--gps>
             <position_sensing>
@@ -60,12 +60,21 @@
     <gazebo reference="base_link">
       <sensor name="imu_sensor" type="imu">
           <always_on>1</always_on>
-          <update_rate>1</update_rate>
+          <update_rate>50</update_rate>
           <visualize>true</visualize>
           <topic>imu</topic>
           <frame_id>base_link</frame_id>
-      </sensor>
-      
+      </sensor> 
+    </gazebo>
+    <!-- Camera -->
+    <gazebo reference="base_camara_link">
+      <sensor name="camera" type="camera">
+          <always_on>1</always_on>
+          <update_rate>50</update_rate>
+          <visualize>true</visualize>
+          <topic>camera</topic>
+          <frame_id>base_camara_link</frame_id>
+      </sensor> 
     </gazebo>
   </xacro:macro>
 </robot>

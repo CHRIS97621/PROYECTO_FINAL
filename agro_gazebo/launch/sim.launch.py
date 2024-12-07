@@ -28,5 +28,4 @@ def generate_launch_description():
         gz_sim,
         spawn,
         bringup
-        
     ])
