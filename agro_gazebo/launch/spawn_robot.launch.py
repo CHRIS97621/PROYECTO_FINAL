@@ -14,12 +14,15 @@ def generate_launch_description():
     package_gz = "ros_gz_sim"
     package_world = "agro_gazebo"
 
-    #~~~~~~~~~~~~~~~~~~~~~~~~ PATHS ~~~~~~~~~~~~~~~~~~~~~~~~~
+    #~~~~~~~~~~~~~~~~~~~~~~~~ PATHS ~~~~~~~~~~~~~~~~~~~~~~~~~#
     path_gz_sim = PathJoinSubstitution([FindPackageShare(package_gz),"launch","gz_sim.launch.py",])
 
 
-    #~~~~~~~~~~~~~~~~~~~~~~~~ NODES ~~~~~~~~~~~~~~~~~~~~~~~~~~~+
+    #~~~~~~~~~~~~~~~~~~~~~~~~ NODES ~~~~~~~~~~~~~~~~~~~~~~~~~~~#
     robot_name = 'robot_agro'
+
+    #Desplegamos nuestro robot en el simulador gazerbo sim#
+
     gz_spawn_entity = Node(
         package="ros_gz_sim",
         executable="create",

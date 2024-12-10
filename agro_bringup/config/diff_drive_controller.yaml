@@ -42,7 +42,7 @@ gz_ros_control:
 
     open_loop: false
     position_feedback: true
-    enable_odom_tf: true
+    enable_odom_tf: true #false
 
     cmd_vel_timeout: 0.5 
     publish_limited_velocity: true
