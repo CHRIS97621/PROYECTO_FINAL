@@ -3,7 +3,7 @@
 ```bash
 git add .
 ```
-### Para hacer commit
+### Para hacer commit (guarda los cambios realizados en los archivos rastreados por Git)
 ```bash
 git commit -m "Primer commit"
 ```
@@ -28,7 +28,16 @@ git log
 ```bash
 git branch -M main
 ```
+### Para guardar los cambios y subirlos al git
 
+```bash
+git push origin main
+```
+### descargar y fusionar los cambios más recientes de la rama main
+
+```bash
+git pull origin main
+```
 
 ### Instalar extensiones
 ROS
