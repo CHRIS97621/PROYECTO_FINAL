@@ -9,6 +9,22 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+
+
+#----------------#
+#  Python NODES  #
+#----------------#
+# Install module
+ament_python_install_package(${PROJECT_NAME})
+# Install py executables
+install(PROGRAMS
+  scripts/plot_odometry.py
+  scripts/plot2_odometry.py
+  scripts/prueba_fusion.py
+  
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 install(DIRECTORY
   world
   launch
