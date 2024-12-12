@@ -40,8 +40,8 @@ gz_ros_control:
     odom_frame_id: odom
     base_frame_id: base_footprint
 
-    pose_covariance_diagonal: [0.001, 0.001, 0.000, 0.000, 0.000, 0.001]
-    twist_covariance_diagonal: [3.3e-5, 3.3e-5, 0.0, 0.0, 0.0, 0.5] # estos valores salen experimentalmente
+    pose_covariance_diagonal: [0.001, 0.001, 0.000, 0.000, 0.000, 0.01]
+    twist_covariance_diagonal: [3.3e-5, 3.3e-5, 0.0, 0.0, 0.0, 0.01] # estos valores salen experimentalmente
 
     open_loop: false
     position_feedback: true

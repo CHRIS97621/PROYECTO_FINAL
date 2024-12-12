@@ -61,17 +61,6 @@ def generate_launch_description():
         output= "screen"
     )
 
-    imu_broadcaster_spawner = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=[
-            "imu_broadcaster",
-            "--controller-manager-timeout",
-            "120",
-        ],
-        parameters=[
-            {'use_sim_time': True}]
-    )
     robot_controller_spawner = Node(
         package="controller_manager",
         name="agro_base_controller",
@@ -91,16 +80,11 @@ def generate_launch_description():
             on_exit=[robot_controller_spawner],
         )
     )
-    delay_imu_broadcaster_spawner_after_robot_controller_spawner = RegisterEventHandler(
-        event_handler=OnProcessExit(
-            target_action=robot_controller_spawner,
-            on_exit=[imu_broadcaster_spawner],
-        )
-    )
+
     return LaunchDescription([
         robot_state_publisher,
         ros_bridge_node,
         joint_state_broadcaster_spawner,
-        delay_robot_controller_spawner_after_joint_state_broadcaster_spawner,
-        delay_imu_broadcaster_spawner_after_robot_controller_spawner
+        delay_robot_controller_spawner_after_joint_state_broadcaster_spawner
+
     ])
