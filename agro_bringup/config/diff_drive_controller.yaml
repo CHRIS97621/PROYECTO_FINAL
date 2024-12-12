@@ -2,12 +2,14 @@
 /**/controller_manager:
   ros__parameters:
     use_sim_time: true
-    update_rate: 125 # Hz
+    update_rate: 200 # Hz
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
     agro_base_controller:
       type: diff_drive_controller/DiffDriveController
+    imu_broadcaster:
+      type: imu_sensor_broadcaster/IMUSensorBroadcaster
 
 
 gz_ros_control:
@@ -28,17 +30,18 @@ gz_ros_control:
     wheel_separation: 0.5015 #0.5015 0.440
     wheel_radius: 0.0615
 
-    wheel_separation_multiplier: 1.45
+    #wheel_separation_multiplier: 1.45
+    wheel_separation_multiplier: 1.40
     left_wheel_radius_multiplier: 1.0
     right_wheel_radius_multiplier: 1.0
 
     tf_frame_prefix_enable: false
     
     odom_frame_id: odom
-    base_frame_id: base_link
+    base_frame_id: base_footprint
 
-    pose_covariance_diagonal: [0.001, 0.001, 0.000, 0.000, 0.000, 0.05]
-    twist_covariance_diagonal: [3.3e-5, 3.3e-5, 0.0, 0.0, 0.0, 2.8e-3] # estos valores salen experimentalmente
+    pose_covariance_diagonal: [0.001, 0.001, 0.000, 0.000, 0.000, 0.001]
+    twist_covariance_diagonal: [3.3e-5, 3.3e-5, 0.0, 0.0, 0.0, 0.5] # estos valores salen experimentalmente
 
     open_loop: false
     position_feedback: true
@@ -50,7 +53,7 @@ gz_ros_control:
     velocity_rolling_window_size: 10
 
     # Frecuencia de publicacion de la odometría  los TF
-    publish_rate: 50.0  
+    publish_rate: 100.0  
 
 
     # Velocity and acceleration limits

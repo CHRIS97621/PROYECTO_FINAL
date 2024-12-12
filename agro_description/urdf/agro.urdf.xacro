@@ -8,6 +8,10 @@
 
     <xacro:include filename="$(find agro_description)/urdf/xacro/wheel.xacro"/>
     <xacro:include filename="$(find agro_description)/urdf/xacro/gazebo.xacro"/>
+
+    <link name= "base_footprint">
+    </link>
+ 
      <!-- Base-->
     <link name="base_link">
         <visual>
@@ -31,6 +35,13 @@
         </collision>
     </link>
  
+    <joint name="base_footprint_joint" type="fixed">
+        <origin xyz="0.0 0.0 0.2" rpy="0.0 0.0 0.0"/>
+        <parent link="base_footprint"/>
+        <child link="base_link"/>
+        
+    </joint>
+
     <!-- Chassis-->
     <link name="chassis_link">
         <visual>
@@ -132,6 +143,36 @@
     <xacro:wheel_joint prefix="front_right" x="0.210" y="-0.224" z="-0.1376"/>
     <xacro:wheel_joint prefix="near_left" x="-0.210" y="0.224" z="-0.1376"/>
     <xacro:wheel_joint prefix="near_right" x="-0.219" y="-0.224" z="-0.1376"/>
+
+    <!-- soporte -->
+    <link name="robot_agro/base_footprint/imu_sensor">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="file://$(find agro_description)/mesh/soporte.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="steel">
+                <color rgba="0.70 0.70 0.70 1.0"/> 
+            </material>
+        </visual>
+        <xacro:inertial_box mass="${soporte_mass}" x="${soporte_largo}" y="${soporte_ancho}" z="${soporte_altura}">
+            <origin xyz="0.0 0.0 0.30" rpy="0.0 0.0 0.0"/>
+        </xacro:inertial_box>
+        <collision>
+            <origin xyz="0.0 0.0 0.30" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="${soporte_largo} ${soporte_ancho} ${soporte_altura}"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="base_imu_joint" type="fixed">
+        <origin xyz="0.21 0.0 0.16" rpy="0.0 0.0 0.0"/>
+        <parent link="base_footprint"/>
+        <child link="robot_agro/base_footprint/imu_sensor"/>
+        
+    </joint>
+    
 
     <xacro:ros2_control/>
 

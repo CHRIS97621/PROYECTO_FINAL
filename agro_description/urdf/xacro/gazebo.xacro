@@ -27,6 +27,18 @@
             <xacro:ros2_control wheel="front_right"/>
             <xacro:ros2_control wheel="near_left"/>
             <xacro:ros2_control wheel="near_right"/>
+            <sensor name="imu">
+              <state_interface name="orientation.x" />
+              <state_interface name="orientation.y" />
+              <state_interface name="orientation.z" />
+              <state_interface name="orientation.w" />
+              <state_interface name="angular_velocity.x" />
+              <state_interface name="angular_velocity.y" />
+              <state_interface name="angular_velocity.z" />
+              <state_interface name="linear_acceleration.x" />
+              <state_interface name="linear_acceleration.y" />
+              <state_interface name="linear_acceleration.z" />
+            </sensor>
         </ros2_control>
   </xacro:macro>  
 
@@ -57,14 +69,53 @@
         </sensor>
     </gazebo>
 
+    <!-- Gauss noise macro -->
+    <xacro:macro name="gauss_noise"
+      params="mean:=0.0 stddev:=0.0 bias_mean:=0.0 bias_stddev:=0.0 precision:=0.0">
+      <noise type="gaussian">
+        <mean>${mean}</mean>
+        <stddev>${stddev}</stddev>
+        <bias_mean>${bias_mean}</bias_mean>
+        <bias_stddev>${bias_stddev}</bias_stddev>
+        <precision>${precision}</precision>
+      </noise>
+    </xacro:macro>
+
     <gazebo reference="base_link">
       <sensor name="imu_sensor" type="imu">
-          <always_on>1</always_on>
-          <update_rate>50</update_rate>
-          <visualize>true</visualize>
-          <topic>imu</topic>
-          <frame_id>base_link</frame_id>
-      </sensor> 
+        <always_on>true</always_on>
+        <update_rate>20</update_rate>
+        <topic>imu</topic>
+        <visualize>false</visualize>
+        <enable_metrics>false</enable_metrics>
+        <frame_id>base_link</frame_id>
+        <imu>
+          <angular_velocity>
+            <!-- rad/s | no bias_mean in datasheet -->
+            <x>
+              <xacro:gauss_noise stddev="5.24e-3" bias_mean="2.0e-3" precision="1.07e-3" />
+            </x>
+            <y>
+              <xacro:gauss_noise stddev="5.24e-3" bias_mean="2.0e-3" precision="1.07e-3" />
+            </y>
+            <z>
+              <xacro:gauss_noise stddev="5.24e-3" bias_mean="2.0e-3" precision="1.07e-3" />
+            </z>
+          </angular_velocity>
+          <linear_acceleration>
+            <!-- m/s^2 | no bias_mean in datasheet -->
+            <x>
+              <xacro:gauss_noise stddev="1.86e-3" bias_mean="1.0e-3" precision="2.40e-3" />
+            </x>
+            <y>
+              <xacro:gauss_noise stddev="1.86e-3" bias_mean="1.0e-3" precision="2.40e-3" />
+            </y>
+            <z>
+              <xacro:gauss_noise stddev="1.86e-3" bias_mean="1.0e-3" precision="2.40e-3" />
+            </z>
+          </linear_acceleration>
+        </imu>
+      </sensor>
     </gazebo>
     <!-- Camera -->
     <gazebo reference="base_camara_link">
