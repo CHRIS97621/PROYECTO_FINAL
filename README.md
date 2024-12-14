@@ -3,6 +3,11 @@
 ### Install dependencies
 
 ```bash
+colcon build --symlink-install
+source install/setup.bash
+```
+
+```bash
 cd ~/project_ws
 rosdep init
 rosdep update --rosdistro $ROS_DISTRO
@@ -18,6 +23,16 @@ ros2 launch agro_gazebo sim.launch.py
 
 ```bash
 ros2 launch path_planner_server navigation.launch.py
+```
+### Lanzar mapviz
+
+```bash
+ros2 launch agro_mapviz mapviz.launch..py
+```
+### Lanzar mapviz
+
+```bash
+ros2 run agro_gazebo remaping_mapviz_rviz.py
 ```
 
 
