@@ -6,6 +6,7 @@ from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, Regi
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.actions import Node
 from launch.event_handlers import OnProcessExit
+from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
 
@@ -80,11 +81,28 @@ def generate_launch_description():
             on_exit=[robot_controller_spawner],
         )
     )
+    delay_robot_controller_spawner_after_joint_state_broadcaster_spawner = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=joint_state_broadcaster_spawner,
+            on_exit=[robot_controller_spawner],
+        )
+    )
+    #~~~~~~~~~~~~~~~~~~ LAUNCH ~~~~~~~~~~~~~~~
+    path_launch_ekf = PathJoinSubstitution([ get_package_share_directory(package_bringup),'launch','dual_ekf_navsat.launch.py'])
+
+    launch_ekf = IncludeLaunchDescription(PythonLaunchDescriptionSource(path_launch_ekf))
+
+    delay_ekf_after_robot_controller_spawner = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=robot_controller_spawner,
+            on_exit=[launch_ekf],
+        )
+    )
 
     return LaunchDescription([
         robot_state_publisher,
         ros_bridge_node,
         joint_state_broadcaster_spawner,
-        delay_robot_controller_spawner_after_joint_state_broadcaster_spawner
-
+        delay_robot_controller_spawner_after_joint_state_broadcaster_spawner,
+        delay_ekf_after_robot_controller_spawner
     ])

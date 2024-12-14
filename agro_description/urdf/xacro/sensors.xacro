@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+    <xacro:include filename="$(find agro_description)/urdf/xacro/properties.xacro"/>
+    <xacro:include filename="$(find agro_description)/urdf/xacro/inertial.xacro"/>
+
+    <!-- base_camera -->
+    <xacro:macro name="camera_sensor">
+        <link name="camera_link">
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                
+                    <mesh filename="file://$(find agro_description)/mesh/base_camara.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="wood">
+                    <color rgba="0.76 0.60 0.42 1.0"/> <!-- Color madera -->
+                </material>
+            </visual>
+            <xacro:inertial_box mass="${base_camara_mass}" x="${base_camara_largo}" y="${base_camara_ancho}" z="${base_camara_altura}">
+                <origin xyz="0.01 0.0 0.0015" rpy="0.0 0.0 0.0"/>
+            </xacro:inertial_box>
+            <collision>
+                <origin xyz="0.01 0.0 0.0015" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <box size="${base_camara_largo} ${base_camara_ancho} ${base_camara_altura}"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="base_camera_joint" type="fixed">
+            <origin xyz="0.21 0.0 0.76" rpy="0.0 0.0 0.0"/>
+            <parent link="base_link"/>
+            <child link="camera_link"/>
+            
+        </joint>
+    </xacro:macro> 
+
+    <!-- Imu -->
+    <xacro:macro name="imu_sensor">
+        <link name="imu_link">
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <box size="${imu_largo} ${imu_ancho} ${imu_altura}"/>
+                </geometry>
+                <material name="wood">
+                    <color rgba="0.76 0.60 0.42 1.0"/> <!-- Color madera -->
+                </material>
+            </visual>
+            <xacro:inertial_box mass="${imu_mass}" x="${imu_largo}" y="${imu_ancho}" z="${imu_altura}">
+                <origin xyz="0.01 0.0 0.0015" rpy="0.0 0.0 0.0"/>
+            </xacro:inertial_box>
+            <collision>
+                <origin xyz="0.01 0.0 0.0015" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <box size="${imu_largo} ${imu_ancho} ${imu_altura}"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="base_imu_joint" type="fixed">
+            <origin xyz="0.0 0.0 0.76" rpy="0.0 0.0 0.0"/>
+            <parent link="base_link"/>
+            <child link="imu_link"/>
+        </joint>
+    </xacro:macro> 
+
+
+    <!-- Lidar -->
+    <xacro:macro name="lidar_sensor">
+        <link name="laser_link">
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <box size="${lidar_largo} ${lidar_ancho} ${lidar_altura}"/>
+                </geometry>
+                <material name="wood">
+                    <color rgba="0.76 0.60 0.42 1.0"/> <!-- Color madera -->
+                </material>
+            </visual>
+            <xacro:inertial_box mass="${lidar_mass}" x="${lidar_largo}" y="${lidar_ancho}" z="${lidar_altura}">
+                <origin xyz="0.01 0.0 0.0015" rpy="0.0 0.0 0.0"/>
+            </xacro:inertial_box>
+            <collision>
+                <origin xyz="0.01 0.0 0.0015" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <box size="${lidar_largo} ${lidar_ancho} ${lidar_altura}"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="base_lidar_joint" type="fixed">
+            <origin xyz="0.0 0.0 0.35" rpy="0.0 0.0 0.0"/>
+            <parent link="base_link"/>
+            <child link="laser_link"/>
+        </joint>
+    </xacro:macro> 
+
+</robot>

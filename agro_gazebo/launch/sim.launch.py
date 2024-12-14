@@ -1,9 +1,12 @@
+
+import os
+
 from launch import LaunchDescription
 
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
-from launch_ros.substitutions import FindPackageShare
+from launch_ros.substitutions import FindPackageShare,FindPackagePrefix
 from launch_ros.actions import Node
 
 
@@ -21,6 +24,9 @@ def generate_launch_description():
     path_spawn_robot= PathJoinSubstitution([FindPackageShare(package_spawn),"launch","spawn_robot.launch.py",])
     path_bringup = PathJoinSubstitution([FindPackageShare(package_bringup),"launch","bringup.launch.py",])
     
+    current_directory = os.getcwd()
+    print(f"Directorio actual: {current_directory}")
+    rviz_file = PathJoinSubstitution([current_directory,"src","PROYECTO_FINAL","agro_gazebo","rviz","sim.rviz",])
 
     #~~~~~~~~~~~~~~~~~~~~~~~~ GZ SIM ~~~~~~~~~~~~~~~~~~~~~~~~~~~+
     gz_sim = IncludeLaunchDescription(PythonLaunchDescriptionSource(path_gz_sim))
@@ -29,18 +35,19 @@ def generate_launch_description():
 
     #~~~~~~~~~~~~~~~~~~~~~~~~ RVIZ ~~~~~~~~~~~~~~~~~~~~~~~~~~~+
     rviz2 = Node(
-        package='rviz2',  # El paquete que contiene RViz2
-        executable='rviz2',  # El ejecutable de RViz2
-        name='rviz2',  # Nombre del nodo de RViz2
-        output='screen',  # Muestra la salida en la terminal
-        emulate_tty=True  # Emula un terminal para la salida
+            package='rviz2',
+            executable='rviz2',
+            name='rviz2',
+            output='screen',
+            emulate_tty=True,
+            arguments=['-d', rviz_file],
     )
+
 
     return LaunchDescription([
         gz_sim,
         spawn,
         bringup,
-        rviz2
-        
+        #rviz2
         
     ])

@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+    
+    <xacro:include filename="$(find agro_description)/urdf/xacro/properties.xacro"/>
+    <xacro:include filename="$(find agro_description)/urdf/xacro/inertial.xacro"/>
+
+    <!-- Chassis-->
+    <xacro:macro name="chassis">
+
+        <link name="base_link">
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <!--box size="0.5 0.316 0.16"/-->
+                    <mesh filename="file://$(find agro_description)/mesh/base.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="wood">
+                    <color rgba="0.76 0.60 0.42 1.0"/> <!-- Color madera -->
+                </material>
+            </visual>
+            <xacro:inertial_box mass="${base_mass}" x="${base_largo}" y="${base_ancho}" z="${base_altura}">
+                <origin xyz="0.0 0.0 ${(base_altura)/2}" rpy="0.0 0.0 0.0"/>
+            </xacro:inertial_box>
+            <collision>
+                <origin xyz="0.0 0.0 ${(base_altura)/2}" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <box size="${base_largo} ${base_ancho} ${base_altura}"/>   <!--0.5 0.316 0.16-->
+                </geometry>
+            </collision>
+        </link>
+    
+        <joint name="base_footprint_joint" type="fixed">
+            <origin xyz="0.0 0.0 0.2" rpy="0.0 0.0 0.0"/>
+            <parent link="base_footprint"/>
+            <child link="base_link"/>
+            
+        </joint>
+
+
+        <link name="chassis_link">
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <!--box size="0.5 0.316 0.16"/-->
+                    <mesh filename="file://$(find agro_description)/mesh/chassis.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="steel">
+                    <color rgba="0.70 0.70 0.70 1.0"/> <!-- Color acero -->
+                </material>
+            </visual>
+            <xacro:inertial_box mass="${chassis_mass}" x="${chassis_largo}" y="${chassis_ancho}" z="${chassis_altura}">
+                <origin xyz="0.0 0.0 ${-(chassis_altura)/2}" rpy="0.0 0.0 0.0"/>
+            </xacro:inertial_box>
+            <collision>
+                <origin xyz="0.0 0.0 ${-(chassis_altura)/2}" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <box size="${chassis_largo} ${chassis_ancho} ${chassis_altura}"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="base_chassis_joint" type="fixed">
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <parent link="base_link"/>
+            <child link="chassis_link"/>
+            
+        </joint>
+    </xacro:macro>  
+
+    <!-- Soporte-->
+    <xacro:macro name="soporte">
+
+        <link name="soporte_link">
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <mesh filename="file://$(find agro_description)/mesh/soporte.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="steel">
+                    <color rgba="0.70 0.70 0.70 1.0"/> 
+                </material>
+            </visual>
+            <xacro:inertial_box mass="${soporte_mass}" x="${soporte_largo}" y="${soporte_ancho}" z="${soporte_altura}">
+                <origin xyz="0.0 0.0 0.30" rpy="0.0 0.0 0.0"/>
+            </xacro:inertial_box>
+            <collision>
+                <origin xyz="0.0 0.0 0.30" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <box size="${soporte_largo} ${soporte_ancho} ${soporte_altura}"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="base_soporte_joint" type="fixed">
+            <origin xyz="0.21 0.0 0.16" rpy="0.0 0.0 0.0"/>
+            <parent link="base_link"/>
+            <child link="soporte_link"/>
+            
+        </joint>
+    
+    </xacro:macro>  
+
+</robot>

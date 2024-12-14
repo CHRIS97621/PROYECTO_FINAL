@@ -1,18 +1,22 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>agro_gazebo</name>
+  <name>agro_mapviz</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
-  <maintainer email="christopherabiliomax@gmail.com">christopher</maintainer>
+  <maintainer email="alaurao@uni.pe">root</maintainer>
   <license>TODO: License declaration</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <depend>rclcpp</depend>
   <depend>std_msgs</depend>
-  <depend>controller_manager</depend>
-  <depend>robot_localization</depend>
+  <depend>mapviz</depend>
+  <depend>swri_transform_util</depend>
+  <depend>mapviz_interfaces</depend>
+  <depend>mapviz_plugins</depend>
+  <depend>tile_map</depend>
+
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 

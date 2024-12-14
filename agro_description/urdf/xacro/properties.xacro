@@ -25,4 +25,15 @@
     <xacro:property name="base_camara_largo" value="0.16" />
     <xacro:property name="base_camara_ancho" value="0.15" />
     <xacro:property name="base_camara_mass" value="0.05" />
+
+    <xacro:property name="imu_altura" value="0.02" />
+    <xacro:property name="imu_largo" value="0.02" />
+    <xacro:property name="imu_ancho" value="0.02" />
+    <xacro:property name="imu_mass" value="0.1" />
+
+    <xacro:property name="lidar_altura" value="0.05" />
+    <xacro:property name="lidar_largo" value="0.05" />
+    <xacro:property name="lidar_ancho" value="0.05" />
+    <xacro:property name="lidar_mass" value="0.1" />
 </robot>
+

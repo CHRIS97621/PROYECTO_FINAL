@@ -21,6 +21,7 @@ install(PROGRAMS
   scripts/plot_odometry.py
   scripts/plot2_odometry.py
   scripts/prueba_fusion.py
+  scripts/remaping_mapviz_rviz.py
   
   DESTINATION lib/${PROJECT_NAME}
 )
@@ -29,6 +30,7 @@ install(DIRECTORY
   world
   launch
   models
+  rviz
   DESTINATION share/${PROJECT_NAME}
 )
 

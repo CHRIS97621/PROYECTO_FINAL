@@ -8,130 +8,18 @@
 
     <xacro:include filename="$(find agro_description)/urdf/xacro/wheel.xacro"/>
     <xacro:include filename="$(find agro_description)/urdf/xacro/gazebo.xacro"/>
+    <xacro:include filename="$(find agro_description)/urdf/xacro/sensors.xacro"/>
+    <xacro:include filename="$(find agro_description)/urdf/xacro/chassis.xacro"/>
 
+     <!-- Base footprint-->
     <link name= "base_footprint">
     </link>
  
-     <!-- Base-->
-    <link name="base_link">
-        <visual>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-            <geometry>
-                <!--box size="0.5 0.316 0.16"/-->
-                <mesh filename="file://$(find agro_description)/mesh/base.stl" scale="0.001 0.001 0.001"/>
-            </geometry>
-            <material name="wood">
-                <color rgba="0.76 0.60 0.42 1.0"/> <!-- Color madera -->
-            </material>
-        </visual>
-        <xacro:inertial_box mass="${base_mass}" x="${base_largo}" y="${base_ancho}" z="${base_altura}">
-            <origin xyz="0.0 0.0 ${(base_altura)/2}" rpy="0.0 0.0 0.0"/>
-        </xacro:inertial_box>
-        <collision>
-            <origin xyz="0.0 0.0 ${(base_altura)/2}" rpy="0.0 0.0 0.0"/>
-            <geometry>
-                <box size="${base_largo} ${base_ancho} ${base_altura}"/>   <!--0.5 0.316 0.16-->
-            </geometry>
-        </collision>
-    </link>
- 
-    <joint name="base_footprint_joint" type="fixed">
-        <origin xyz="0.0 0.0 0.2" rpy="0.0 0.0 0.0"/>
-        <parent link="base_footprint"/>
-        <child link="base_link"/>
-        
-    </joint>
+    <!-- Chassis -->
+    <xacro:chassis/>
 
-    <!-- Chassis-->
-    <link name="chassis_link">
-        <visual>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-            <geometry>
-                <!--box size="0.5 0.316 0.16"/-->
-                <mesh filename="file://$(find agro_description)/mesh/chassis.stl" scale="0.001 0.001 0.001"/>
-            </geometry>
-            <material name="steel">
-                <color rgba="0.70 0.70 0.70 1.0"/> <!-- Color acero -->
-            </material>
-        </visual>
-        <xacro:inertial_box mass="${chassis_mass}" x="${chassis_largo}" y="${chassis_ancho}" z="${chassis_altura}">
-            <origin xyz="0.0 0.0 ${-(chassis_altura)/2}" rpy="0.0 0.0 0.0"/>
-        </xacro:inertial_box>
-        <collision>
-            <origin xyz="0.0 0.0 ${-(chassis_altura)/2}" rpy="0.0 0.0 0.0"/>
-            <geometry>
-                <box size="${chassis_largo} ${chassis_ancho} ${chassis_altura}"/>
-            </geometry>
-        </collision>
-    </link>
-
-    <joint name="base_chassis_joint" type="fixed">
-        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-        <parent link="base_link"/>
-        <child link="chassis_link"/>
-        
-    </joint>
-    
-    <!-- soporte -->
-    <link name="soporte_link">
-        <visual>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-            <geometry>
-                <mesh filename="file://$(find agro_description)/mesh/soporte.stl" scale="0.001 0.001 0.001"/>
-            </geometry>
-            <material name="steel">
-                <color rgba="0.70 0.70 0.70 1.0"/> 
-            </material>
-        </visual>
-        <xacro:inertial_box mass="${soporte_mass}" x="${soporte_largo}" y="${soporte_ancho}" z="${soporte_altura}">
-            <origin xyz="0.0 0.0 0.30" rpy="0.0 0.0 0.0"/>
-        </xacro:inertial_box>
-        <collision>
-            <origin xyz="0.0 0.0 0.30" rpy="0.0 0.0 0.0"/>
-            <geometry>
-                <box size="${soporte_largo} ${soporte_ancho} ${soporte_altura}"/>
-            </geometry>
-        </collision>
-    </link>
-
-    <joint name="base_soporte_joint" type="fixed">
-        <origin xyz="0.21 0.0 0.16" rpy="0.0 0.0 0.0"/>
-        <parent link="base_link"/>
-        <child link="soporte_link"/>
-        
-    </joint>
-    
-    
-    <!-- base_camara-->
-    <link name="base_camara_link">
-        <visual>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-            <geometry>
-              
-                <mesh filename="file://$(find agro_description)/mesh/base_camara.stl" scale="0.001 0.001 0.001"/>
-            </geometry>
-            <material name="wood">
-                <color rgba="0.76 0.60 0.42 1.0"/> <!-- Color madera -->
-            </material>
-        </visual>
-        <xacro:inertial_box mass="${base_camara_mass}" x="${base_camara_largo}" y="${base_camara_ancho}" z="${base_camara_altura}">
-            <origin xyz="0.01 0.0 0.0015" rpy="0.0 0.0 0.0"/>
-        </xacro:inertial_box>
-        <collision>
-            <origin xyz="0.01 0.0 0.0015" rpy="0.0 0.0 0.0"/>
-            <geometry>
-                <box size="${base_camara_largo} ${base_camara_ancho} ${base_camara_altura}"/>
-            </geometry>
-        </collision>
-    </link>
-
-    <joint name="base_camara_joint" type="fixed">
-        <origin xyz="0.21 0.0 0.76" rpy="0.0 0.0 0.0"/>
-        <parent link="base_link"/>
-        <child link="base_camara_link"/>
-        
-    </joint>
-    
+    <!-- Soporte -->
+   <xacro:soporte/>
 
     <!-- Wheels-->
     <xacro:wheel_link prefix="front_left" />
@@ -144,37 +32,19 @@
     <xacro:wheel_joint prefix="near_left" x="-0.210" y="0.224" z="-0.1376"/>
     <xacro:wheel_joint prefix="near_right" x="-0.219" y="-0.224" z="-0.1376"/>
 
-    <!-- soporte -->
-    <link name="robot_agro/base_footprint/imu_sensor">
-        <visual>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-            <geometry>
-                <mesh filename="file://$(find agro_description)/mesh/soporte.stl" scale="0.001 0.001 0.001"/>
-            </geometry>
-            <material name="steel">
-                <color rgba="0.70 0.70 0.70 1.0"/> 
-            </material>
-        </visual>
-        <xacro:inertial_box mass="${soporte_mass}" x="${soporte_largo}" y="${soporte_ancho}" z="${soporte_altura}">
-            <origin xyz="0.0 0.0 0.30" rpy="0.0 0.0 0.0"/>
-        </xacro:inertial_box>
-        <collision>
-            <origin xyz="0.0 0.0 0.30" rpy="0.0 0.0 0.0"/>
-            <geometry>
-                <box size="${soporte_largo} ${soporte_ancho} ${soporte_altura}"/>
-            </geometry>
-        </collision>
-    </link>
+    <!-- camera sensor-->
+    <xacro:camera_sensor/>
 
-    <joint name="base_imu_joint" type="fixed">
-        <origin xyz="0.21 0.0 0.16" rpy="0.0 0.0 0.0"/>
-        <parent link="base_footprint"/>
-        <child link="robot_agro/base_footprint/imu_sensor"/>
-        
-    </joint>
+    <!-- imu sensor-->
+    <xacro:imu_sensor/>  
+
+    <!-- lidar sensor-->
+    <xacro:lidar_sensor/>  
     
-
+    <!-- ros2 control-->
     <xacro:ros2_control/>
 
+    <!-- gazebo-->
     <xacro:plugins_gazebo/>
+
 </robot>
