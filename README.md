@@ -8,12 +8,17 @@ rosdep init
 rosdep update --rosdistro $ROS_DISTRO
 rosdep install -i --from-path src --rosdistro $ROS_DISTRO -y
 ```
-### Lanzar simualción
+### Lanzar simualción y ekf
 
 ```bash
 ros2 launch agro_gazebo sim.launch.py
 ```
 
+### Lanzar navegación
+
+```bash
+ros2 launch path_planner_server navigation.launch.py
+```
 
 
 ```bash
