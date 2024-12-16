@@ -79,45 +79,45 @@
       <self_collide>false</self_collide>
     </model>
     <include>
-      <uri>file:///root/project_ws/install/agro_gazebo/share/agro_gazebo/models/Verde</uri>
+      <uri>model://Verde</uri>
       <name>Verde</name>
       <pose>0.5 5.5 0 0 0 0</pose>
     </include>
 
     <include>
-      <uri>file:///root/project_ws/install/agro_gazebo/share/agro_gazebo/models/Verde Limon</uri>
+      <uri>model://Verde Limon</uri>
       <name>Verde Limon</name>
       <pose>0.5 1.0 0 0 0 0</pose>
     </include>
     <include>
-      <uri>file:///root/project_ws/install/agro_gazebo/share/agro_gazebo/models/Malogrado</uri>
+      <uri>model://Malogrado</uri>
       <name>Malogrado</name>
       <pose>0.5 2.5 0 0 0 0</pose>
     </include>
     <include>
-      <uri>file:///root/project_ws/install/agro_gazebo/share/agro_gazebo/models/Melon</uri>
+      <uri>model://Melon</uri>
       <name>Melon</name>
       <pose>0.5 4.0 0 0 0 0</pose>
     </include>
 
     <include>
-      <uri>file:///root/project_ws/install/agro_gazebo/share/agro_gazebo/models/Verde Limon</uri>
+      <uri>model://Verde Limon</uri>
       <name>Verde Limon_0</name>
       <pose>3.5 1.0 0 0 0 0</pose>
     </include>
     <include>
-      <uri>file:///root/project_ws/install/agro_gazebo/share/agro_gazebo/models/Malogrado</uri>
+      <uri>model://Malogrado</uri>
       <name>Malogrado_0</name>
       <pose>3.5 2.5 0 0 0 0</pose>
     </include>
     <include>
-      <uri>file:///root/project_ws/install/agro_gazebo/share/agro_gazebo/models/Melon</uri>
+      <uri>model://Melon</uri>
       <name>Melon_0</name>
       <pose>3.5 4.0 0 0 0 0</pose>
     </include>
 
     <include>
-      <uri>file:///root/project_ws/install/agro_gazebo/share/agro_gazebo/models/Verde</uri>
+      <uri>model://Verde</uri>
       <name>Verde_0</name>
       <pose>3.5 5.5 0 0 0 0</pose>
     </include>
