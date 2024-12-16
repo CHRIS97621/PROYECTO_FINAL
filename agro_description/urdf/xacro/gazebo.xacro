@@ -31,13 +31,15 @@
   </xacro:macro>  
 
   <xacro:macro name="plugins_gazebo">
-  
-    <gazebo reference="base_footprint">
+
+    <!-- gps base_footprint -->
+
+    <gazebo reference="gps_link">
         <sensor name="gps" type="navsat">
           <always_on>true</always_on>
           <update_rate>5</update_rate>
           <pose>0 0 0 0 0 0</pose>
-          <gz_frame_id>base_footprint</gz_frame_id>
+          <gz_frame_id>gps_link</gz_frame_id>
           <gps>
             <position_sensing>
               <horizontal>
@@ -69,6 +71,8 @@
         <precision>${precision}</precision>
       </noise>
     </xacro:macro>
+
+    <!-- IMU -->
 
     <gazebo reference="imu_link">
       <sensor name="imu_sensor" type="imu">
@@ -116,7 +120,7 @@
           <gz_frame_id>camera_link</gz_frame_id>
       </sensor> 
     </gazebo>
-
+    <!-- Laser -->
     <gazebo reference="laser_link">
       <sensor name='gpu_lidar' type='gpu_lidar'>"
           <topic>scan</topic>

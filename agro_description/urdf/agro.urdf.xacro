@@ -21,6 +21,9 @@
     <!-- Soporte -->
    <xacro:soporte/>
 
+    <!-- Soporte -->
+   <xacro:head/>
+
     <!-- Wheels-->
     <xacro:wheel_link prefix="front_left" />
     <xacro:wheel_link prefix="front_right" />
@@ -36,7 +39,10 @@
     <xacro:camera_sensor/>
 
     <!-- imu sensor-->
-    <xacro:imu_sensor/>  
+    <xacro:imu_sensor/> 
+
+    <!-- gps sensor-->
+    <xacro:gps/>  
 
     <!-- lidar sensor-->
     <xacro:lidar_sensor/>  

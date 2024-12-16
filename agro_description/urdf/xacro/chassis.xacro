@@ -67,7 +67,7 @@
         </joint>
     </xacro:macro>  
 
-    <!-- Soporte-->
+    <!-- Soporte -->
     <xacro:macro name="soporte">
 
         <link name="soporte_link">
@@ -96,6 +96,38 @@
             <parent link="base_link"/>
             <child link="soporte_link"/>
             
+        </joint>   
+    </xacro:macro> 
+
+    <!-- head -->
+    <xacro:macro name="head">
+
+        <link name="head_link">
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <mesh filename="file://$(find agro_description)/mesh/base_camara.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="wood">
+                    <color rgba="0.76 0.60 0.42 1.0"/> <!-- Color madera -->
+                </material>
+            </visual>
+            <xacro:inertial_box mass="${base_camara_mass}" x="${base_camara_largo}" y="${base_camara_ancho}" z="${base_camara_altura}">
+                <origin xyz="0.01 0.0 0.0015" rpy="0.0 0.0 0.0"/>
+            </xacro:inertial_box>
+            <collision>
+                <origin xyz="0.01 0.0 0.0015" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <box size="${base_camara_largo} ${base_camara_ancho} ${base_camara_altura}"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="base_head_joint" type="fixed">
+            <origin xyz="0.21 0.0 0.76" rpy="0.0 0.0 0.0"/>
+            <parent link="base_link"/>
+            <child link="head_link"/>
+
         </joint>
     
     </xacro:macro>  

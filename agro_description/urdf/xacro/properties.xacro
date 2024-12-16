@@ -31,9 +31,19 @@
     <xacro:property name="imu_ancho" value="0.02" />
     <xacro:property name="imu_mass" value="0.1" />
 
+    <xacro:property name="gps_altura" value="0.02" />
+    <xacro:property name="gps_largo" value="0.02" />
+    <xacro:property name="gps_ancho" value="0.02" />
+    <xacro:property name="gps_mass" value="0.1" />
+
     <xacro:property name="lidar_altura" value="0.05" />
     <xacro:property name="lidar_largo" value="0.05" />
     <xacro:property name="lidar_ancho" value="0.05" />
     <xacro:property name="lidar_mass" value="0.1" />
+
+    <xacro:property name="camara_altura" value="0.02" />
+    <xacro:property name="camara_largo" value="0.02" />
+    <xacro:property name="camara_ancho" value="0.02" />
+    <xacro:property name="camara_mass" value="0.1" />
 </robot>
 

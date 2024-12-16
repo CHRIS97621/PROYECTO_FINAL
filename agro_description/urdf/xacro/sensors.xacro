@@ -4,32 +4,31 @@
     <xacro:include filename="$(find agro_description)/urdf/xacro/properties.xacro"/>
     <xacro:include filename="$(find agro_description)/urdf/xacro/inertial.xacro"/>
 
-    <!-- base_camera -->
+    <!-- camera -->
     <xacro:macro name="camera_sensor">
         <link name="camera_link">
-            <visual>
+           <visual>
                 <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
                 <geometry>
-                
-                    <mesh filename="file://$(find agro_description)/mesh/base_camara.stl" scale="0.001 0.001 0.001"/>
+                    <box size="${camara_largo} ${camara_ancho} ${camara_altura}"/>
                 </geometry>
-                <material name="wood">
-                    <color rgba="0.76 0.60 0.42 1.0"/> <!-- Color madera -->
+                <material name="red">
+                    <color rgba="0.8 0.0 0.0 1.0"/> <!-- Color madera -->
                 </material>
             </visual>
-            <xacro:inertial_box mass="${base_camara_mass}" x="${base_camara_largo}" y="${base_camara_ancho}" z="${base_camara_altura}">
+            <xacro:inertial_box mass="${camara_mass}" x="${camara_largo}" y="${camara_ancho}" z="${camara_altura}">
                 <origin xyz="0.01 0.0 0.0015" rpy="0.0 0.0 0.0"/>
             </xacro:inertial_box>
             <collision>
                 <origin xyz="0.01 0.0 0.0015" rpy="0.0 0.0 0.0"/>
                 <geometry>
-                    <box size="${base_camara_largo} ${base_camara_ancho} ${base_camara_altura}"/>
+                    <box size="${camara_largo} ${camara_ancho} ${camara_altura}"/>
                 </geometry>
             </collision>
         </link>
 
         <joint name="base_camera_joint" type="fixed">
-            <origin xyz="0.21 0.0 0.76" rpy="0.0 0.0 0.0"/>
+            <origin xyz="0.18 0.04 0.77" rpy="0.0 0.0 0.0"/>
             <parent link="base_link"/>
             <child link="camera_link"/>
             
@@ -44,8 +43,8 @@
                 <geometry>
                     <box size="${imu_largo} ${imu_ancho} ${imu_altura}"/>
                 </geometry>
-                <material name="wood">
-                    <color rgba="0.76 0.60 0.42 1.0"/> <!-- Color madera -->
+                <material name="black">
+                    <color rgba="0.0 0.0 0.0 1.0"/> 
                 </material>
             </visual>
             <xacro:inertial_box mass="${imu_mass}" x="${imu_largo}" y="${imu_ancho}" z="${imu_altura}">
@@ -60,9 +59,39 @@
         </link>
 
         <joint name="base_imu_joint" type="fixed">
-            <origin xyz="0.0 0.0 0.76" rpy="0.0 0.0 0.0"/>
+            <origin xyz="0.18 0.0 0.015" rpy="0.0 0.0 0.0"/>
             <parent link="base_link"/>
             <child link="imu_link"/>
+        </joint>
+    </xacro:macro> 
+
+    <!-- GPS -->
+    <xacro:macro name="gps">
+        <link name="gps_link">
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <box size="${gps_largo} ${gps_ancho} ${gps_altura}"/>
+                </geometry>
+                <material name="blue">
+                    <color rgba="0.0 0.0 0.8 1.0"/> <!-- Color madera -->
+                </material>
+            </visual>
+            <xacro:inertial_box mass="${gps_mass}" x="${gps_largo}" y="${gps_ancho}" z="${gps_altura}">
+                <origin xyz="0.01 0.0 0.0015" rpy="0.0 0.0 0.0"/>
+            </xacro:inertial_box>
+            <collision>
+                <origin xyz="0.01 0.0 0.0015" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <box size="${gps_largo} ${gps_ancho} ${gps_altura}"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="base_gps_joint" type="fixed">
+            <origin xyz="0.21 0.0 0.77" rpy="0.0 0.0 0.0"/>
+            <parent link="base_link"/>
+            <child link="gps_link"/>
         </joint>
     </xacro:macro> 
 
@@ -75,8 +104,8 @@
                 <geometry>
                     <box size="${lidar_largo} ${lidar_ancho} ${lidar_altura}"/>
                 </geometry>
-                <material name="wood">
-                    <color rgba="0.76 0.60 0.42 1.0"/> <!-- Color madera -->
+                <material name="black">
+                    <color rgba="0.0 0.0 0.0 1.0"/> <!-- Color madera -->
                 </material>
             </visual>
             <xacro:inertial_box mass="${lidar_mass}" x="${lidar_largo}" y="${lidar_ancho}" z="${lidar_altura}">
@@ -91,7 +120,7 @@
         </link>
 
         <joint name="base_lidar_joint" type="fixed">
-            <origin xyz="0.0 0.0 0.35" rpy="0.0 0.0 0.0"/>
+            <origin xyz="0.21 0.04 0.185" rpy="0.0 0.0 0.0"/>
             <parent link="base_link"/>
             <child link="laser_link"/>
         </joint>
