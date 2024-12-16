@@ -36,7 +36,7 @@ def generate_launch_description():
     gz_args = f"-r {world_str}"
 
     gz_sim = IncludeLaunchDescription(PythonLaunchDescriptionSource(path_gz_sim),
-        launch_arguments=[('gz_args',packagepath + '/world/test.sdf -r -v4 ')]
+        launch_arguments=[('gz_args',packagepath + '/world/agro_world.sdf -r -v4 ')]
         
     )
 

@@ -9,6 +9,7 @@ source install/setup.bash
 
 ```bash
 cd ~/project_ws
+sudo apt update
 rosdep init
 rosdep update --rosdistro $ROS_DISTRO
 rosdep install -i --from-path src --rosdistro $ROS_DISTRO -y
