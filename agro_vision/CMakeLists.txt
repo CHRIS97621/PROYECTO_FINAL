@@ -33,6 +33,8 @@ find_package(image_transport REQUIRED)
 # Install py executables
 install(PROGRAMS
   scripts/vision_node.py
+  scripts/detector_node.py
+ 
  
   DESTINATION lib/${PROJECT_NAME}
 )

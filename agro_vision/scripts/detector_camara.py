@@ -3,8 +3,6 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
-from sensor_msgs.msg import Image
-from cv_bridge import CvBridge
 import cv2
 import time
 import os
@@ -14,16 +12,11 @@ class CacaoDetectorNode(Node):
     def __init__(self):
         super().__init__('cacao_detector_node_v8')
 
-        # Suscribirse al tópico de imágenes "camera_frame"
-        self.subscription = self.create_subscription(
-            Image,
-            'camera_frame',
-            self.listener_callback,
-            10
-        )
-
-        # Inicializar CvBridge para convertir mensajes ROS a OpenCV
-        self.br = CvBridge()
+        # Inicializar la cámara en /dev/video2 usando CAP_V4L2
+        self.cap = cv2.VideoCapture('/dev/video2', cv2.CAP_V4L2)
+        if not self.cap.isOpened():
+            self.get_logger().error("No se puede acceder a la cámara en /dev/video2")
+            return
 
         # Añadir el entorno pipx al sys.path
         pipx_venv_path = "/home/christopher/.local/share/pipx/venvs/ultralytics/lib/python3.12/site-packages"
@@ -42,6 +35,9 @@ class CacaoDetectorNode(Node):
         # Control de tiempo para guardar una imagen cada segundo
         self.last_capture_time = time.time()
 
+        # Timer para procesar la cámara en intervalos regulares
+        self.timer = self.create_timer(0.1, self.process_frame)  # Procesar la imagen cada 0.1 segundos
+
     def load_yolov8_model(self):
         try:
             # Importar torch y ultralytics del entorno pipx
@@ -55,14 +51,11 @@ class CacaoDetectorNode(Node):
             self.get_logger().error(f"Error al cargar el modelo YOLOv8: {e}")
             return None
 
-    def listener_callback(self, msg):
-        try:
-            # Convertir el mensaje de imagen de ROS a OpenCV
-            print("data recibida")
-            frame = self.br.imgmsg_to_cv2(msg, 'bgr8')
-
-        except Exception as e:
-            self.get_logger().error(f"Error al convertir la imagen: {e}")
+    def process_frame(self):
+        # Leer el frame de la cámara
+        ret, frame = self.cap.read()
+        if not ret:
+            self.get_logger().error('No se pudo capturar la imagen de la cámara')
             return
 
         # Realizar detección con YOLOv8
@@ -82,7 +75,7 @@ class CacaoDetectorNode(Node):
                 cls_id = int(classes[i])  # ID de la clase detectada
                 label = class_names[cls_id]  # Obtener el nombre de la clase
 
-                # Invertimos las etiquetas debido al entrenamiento
+                # Invertimos las etiquetas devido al entrenamiento
                 if label == 'cacao sano':
                     label = 'cacao enfermo'
                 elif label == 'cacao enfermo':
@@ -100,7 +93,7 @@ class CacaoDetectorNode(Node):
             self.publisher_.publish(detection_msg)
             self.get_logger().info(f'Detección publicada: {detection_msg.data}')
 
-            # Guardar una imagen cada 2 segundos
+            # Guardar una imagen cada segundo
             current_time = time.time()
             if current_time - self.last_capture_time >= 2.0:
                 timestamp = time.strftime("%Y%m%d-%H%M%S")
@@ -115,17 +108,15 @@ class CacaoDetectorNode(Node):
                 self.destroy_node()
 
     def destroy_node(self):
-        # Cierra todas las ventanas de OpenCV al finalizar
+        # Liberar el recurso de la cámara al finalizar el nodo
+        self.cap.release()
         cv2.destroyAllWindows()
         super().destroy_node()
 
 def main(args=None):
     rclpy.init(args=args)
     node = CacaoDetectorNode()
-    try:
-        rclpy.spin(node)
-    except KeyboardInterrupt:
-        pass
+    rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
 
