@@ -7,9 +7,9 @@ enable_antialiasing: true
 show_displays: true
 show_status_bar: true
 show_capture_tools: true
-window_width: 1914
+window_width: 1920
 window_height: 957
-view_scale: 0.0373209082
+view_scale: 0.0182602648
 offset_x: -0.958295822
 offset_y: -4.92315626
 use_latest_transforms: true
@@ -38,7 +38,7 @@ displays:
   - type: mapviz_plugins/tf_frame
     name: new display
     config:
-      visible: true
+      visible: false
       collapsed: false
       frame: base_link
       color: "#00ff00"
@@ -55,8 +55,68 @@ displays:
       topic: /gps/raw
       color: "#55aaff"
       draw_style: points
-      position_tolerance: 0
+      position_tolerance: 2
       buffer_size: 1
+      qos_depth: 10
+      qos_history: 1
+      qos_reliability: 1
+      qos_durability: 2
+  - type: mapviz_plugins/odometry
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      topic: /odometry/global
+      color: "#ed333b"
+      draw_style: points
+      position_tolerance: 0
+      buffer_size: 0
+      show_laps: false
+      show_covariance: false
+      show_all_covariances: false
+      static_arrow_sizes: false
+      arrow_size: 22
+      show_timestamps: 0
+      qos_depth: 10
+      qos_history: 1
+      qos_reliability: 1
+      qos_durability: 2
+  - type: mapviz_plugins/odometry
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      topic: /odometry/local
+      color: "#f9f06b"
+      draw_style: lines
+      position_tolerance: 0
+      buffer_size: 0
+      show_laps: false
+      show_covariance: false
+      show_all_covariances: false
+      static_arrow_sizes: false
+      arrow_size: 25
+      show_timestamps: 0
+      qos_depth: 10
+      qos_history: 1
+      qos_reliability: 1
+      qos_durability: 2
+  - type: mapviz_plugins/odometry
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      topic: /odometry/gps
+      color: "#813d9c"
+      draw_style: lines
+      position_tolerance: 0
+      buffer_size: 0
+      show_laps: false
+      show_covariance: false
+      show_all_covariances: false
+      static_arrow_sizes: false
+      arrow_size: 25
+      show_timestamps: 0
       qos_depth: 10
       qos_history: 1
       qos_reliability: 1

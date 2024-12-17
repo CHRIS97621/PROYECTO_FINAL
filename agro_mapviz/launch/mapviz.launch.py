@@ -33,19 +33,19 @@ def generate_launch_description():
         ],
         parameters=[
             {"local_xy_frame": "map"},
-            {"local_xy_origin": "swri"},
-            {"local_xy_origins": """[
-                {"name": "swri",
-                "latitude": -12.0597,
-                "longitude": -75.2373,
-                "altitude": 233.719,
-                "heading": 0.0},
-                {"name": "back_40",
-                "latitude": -12.0597,
-                "longitude": -75.2373,
-                "altitude": 200.0,
-                "heading": 0.0}
-            ]"""},
+            {"local_xy_origin": "auto"},
+            #{"local_xy_origins": """[
+                #{"name": "swri",
+                #"latitude": -12.0597,
+                #"longitude": -75.2373,
+                #"altitude": 233.719,
+                #"heading": 0.0},
+                #{"name": "back_40",
+                #"latitude": -12.0597,
+                #"longitude": -75.2373,
+                #"altitude": 200.0,
+                #"heading": 0.0}
+            #]"""},
         ]
     )
 

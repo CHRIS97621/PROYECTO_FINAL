@@ -2,9 +2,9 @@
   <world name='empty'>
     <spherical_coordinates>
       <surface_model>EARTH_WGS84</surface_model>
-      <latitude_deg>-12.059786000000001</latitude_deg>
-      <longitude_deg>-75.236000000000004</longitude_deg>
-      <elevation>488</elevation>
+      <latitude_deg>-12.024824</latitude_deg>
+      <longitude_deg>-77.047441</longitude_deg>
+      <elevation>224.0</elevation>
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
     <plugin name='gz::sim::systems::Imu' filename='gz-sim-imu-system'/>

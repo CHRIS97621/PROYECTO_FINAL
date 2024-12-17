@@ -7,8 +7,8 @@
       therefore we rotate the default frame 180 so that it would go back to ENU
       see: https://github.com/osrf/gazebo/issues/2022 -->
       <surface_model>EARTH_WGS84</surface_model>
-      <latitude_deg>-12.059786</latitude_deg>
-      <longitude_deg>-75.236</longitude_deg>
+      <latitude_deg>-12.024824</latitude_deg>
+      <longitude_deg>-77.047441</longitude_deg>
       <elevation>488.0</elevation>
       <heading_deg>0.0</heading_deg>
     </spherical_coordinates>

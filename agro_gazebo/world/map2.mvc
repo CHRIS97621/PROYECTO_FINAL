@@ -9,9 +9,9 @@ show_status_bar: true
 show_capture_tools: true
 window_width: 1920
 window_height: 957
-view_scale: 0.866783917
-offset_x: -55.0469894
-offset_y: -4.65194941
+view_scale: 0.00378902722
+offset_x: -5.07323933
+offset_y: -10.1169043
 use_latest_transforms: true
 background: "#a0a0a4"
 image_transport: raw
@@ -33,18 +33,90 @@ displays:
     config:
       visible: true
       collapsed: false
-      topic: clicked_point
-      output_frame: near_right_wheel
+      topic: goal_pose_mapviz
+      output_frame: map
+  - type: mapviz_plugins/tf_frame
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      frame: base_link
+      color: "#00ff00"
+      draw_style: arrows
+      position_tolerance: 0
+      buffer_size: 7
+      static_arrow_sizes: true
+      arrow_size: 27
   - type: mapviz_plugins/navsat
     name: new display
     config:
       visible: true
       collapsed: false
-      topic: /gps/raw
-      color: "#00ff00"
+      topic: /gps/filtered
+      color: "#1a5fb4"
+      draw_style: lines
+      position_tolerance: 6
+      buffer_size: 0
+      qos_depth: 10
+      qos_history: 1
+      qos_reliability: 1
+      qos_durability: 2
+  - type: mapviz_plugins/odometry
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      topic: /odometry/global
+      color: "#ed333b"
       draw_style: lines
       position_tolerance: 0
+      buffer_size: 1
+      show_laps: false
+      show_covariance: false
+      show_all_covariances: false
+      static_arrow_sizes: false
+      arrow_size: 25
+      show_timestamps: 0
+      qos_depth: 10
+      qos_history: 1
+      qos_reliability: 1
+      qos_durability: 2
+  - type: mapviz_plugins/odometry
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      topic: /odometry/local
+      color: "#dc8add"
+      draw_style: lines
+      position_tolerance: 4
       buffer_size: 0
+      show_laps: false
+      show_covariance: false
+      show_all_covariances: false
+      static_arrow_sizes: false
+      arrow_size: 25
+      show_timestamps: 0
+      qos_depth: 10
+      qos_history: 1
+      qos_reliability: 1
+      qos_durability: 2
+  - type: mapviz_plugins/odometry
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      topic: /odometry/gps
+      color: "#b5835a"
+      draw_style: arrows
+      position_tolerance: 0
+      buffer_size: 3
+      show_laps: false
+      show_covariance: false
+      show_all_covariances: false
+      static_arrow_sizes: false
+      arrow_size: 1
+      show_timestamps: 0
       qos_depth: 10
       qos_history: 1
       qos_reliability: 1
