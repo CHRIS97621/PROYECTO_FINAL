@@ -95,7 +95,7 @@
       <pose>0.5 2.5 0 0 0 0</pose>
     </include>
     <include>
-      <uri>model://Melon</uri>
+      <uri>model://Verde Limon</uri>
       <name>Melon</name>
       <pose>0.5 4.0 0 0 0 0</pose>
     </include>
@@ -111,13 +111,13 @@
       <pose>3.5 2.5 0 0 0 0</pose>
     </include>
     <include>
-      <uri>model://Melon</uri>
+      <uri>model://Verde Limon</uri>
       <name>Melon_0</name>
       <pose>3.5 4.0 0 0 0 0</pose>
     </include>
 
     <include>
-      <uri>model://Verde</uri>
+      <uri>model://Verde Limon</uri>
       <name>Verde_0</name>
       <pose>3.5 5.5 0 0 0 0</pose>
     </include>

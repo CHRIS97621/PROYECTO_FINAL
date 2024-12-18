@@ -17,8 +17,8 @@ class CacaoDetectorNode(Node):
         # Suscribirse al tópico de imágenes "camera_frame"
         self.subscription = self.create_subscription(
             Image,
-            'camera_frame',
-            self.listener_callback,
+            'camera',
+            self.camera_callback,
             10
         )
 
@@ -55,7 +55,7 @@ class CacaoDetectorNode(Node):
             self.get_logger().error(f"Error al cargar el modelo YOLOv8: {e}")
             return None
 
-    def listener_callback(self, msg):
+    def camera_callback(self, msg):
         try:
             # Convertir el mensaje de imagen de ROS a OpenCV
             print("data recibida")
