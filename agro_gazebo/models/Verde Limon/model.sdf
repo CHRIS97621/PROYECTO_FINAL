@@ -26,7 +26,7 @@
       <visual name="visual">
         <geometry>
           <mesh>
-            <uri>model://Verde Limon/meshes/amarillo.dae</uri>
+            <uri>model://Verde Limon/meshes/anaranjado_fuerte.dae</uri>
             <scale>0.44 0.44 0.44</scale>
           </mesh>
         </geometry>

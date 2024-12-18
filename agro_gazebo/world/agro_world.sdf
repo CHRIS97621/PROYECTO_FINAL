@@ -29,7 +29,7 @@
     </scene-->
     <scene>
       <ambient>1 1 1 1</ambient>
-      <background>0.53 0.81 0.92 1</background>
+      <background>0.1 0.2 0.4 1</background>
       <shadows>0</shadows>
     </scene> 
     
@@ -117,13 +117,13 @@
       <pose>3.5 2.5 0 0 0 0</pose>
     </include>
     <include>
-      <uri>model://Verde Limon</uri>
+      <uri>model://Melon</uri>
       <name>Melon_0</name>
       <pose>3.5 4.0 0 0 0 0</pose>
     </include>
 
     <include>
-      <uri>model://Verde Limon</uri>
+      <uri>model://Melon</uri>
       <name>Verde_0</name>
       <pose>3.5 5.5 0 0 0 0</pose>
     </include>

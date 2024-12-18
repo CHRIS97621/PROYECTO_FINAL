@@ -26,7 +26,7 @@
       <visual name="visual">
         <geometry>
           <mesh>
-            <uri>model://Melon/meshes/melon.dae</uri>
+            <uri>model://Melon/meshes/anaranjado_rojo.dae</uri>
             <scale>0.44 0.44 0.44</scale>
           </mesh>
         </geometry>
