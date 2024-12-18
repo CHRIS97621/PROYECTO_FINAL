@@ -26,8 +26,8 @@ def generate_launch_description():
 
     arg_map_file = DeclareLaunchArgument(
         'map_file',
-        choices= ['map.yaml','warehouse_map_real.yaml','warehouse_map_sim_edit.yaml'],
-        default_value='map.yaml',
+        choices= ['granja.yaml','warehouse_map_real.yaml','warehouse_map_sim_edit.yaml'],
+        default_value='granja.yaml',
         description='Path to the map select'
     )
 
