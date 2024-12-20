@@ -20,6 +20,10 @@
 
     <!-- Soporte -->
    <xacro:soporte/>
+   
+    <!-- Box -->
+   <xacro:box/>
+
 
     <!-- Soporte -->
    <xacro:head/>
@@ -53,4 +57,8 @@
     <!-- gazebo-->
     <xacro:plugins_gazebo/>
 
+    <xacro:wheels_friction side="front_left"/>
+    <xacro:wheels_friction side="front_right"/>
+    <xacro:wheels_friction side="near_left"/>
+    <xacro:wheels_friction side="near_right"/>
 </robot>

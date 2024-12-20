@@ -132,4 +132,38 @@
     
     </xacro:macro>  
 
+    <!-- caja equilibrio -->
+    <xacro:macro name="box">
+
+        <link name="box_link">
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <mesh filename="file://$(find agro_description)/mesh/base_camara.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="wood">
+                    <color rgba="0.76 0.60 0.42 1.0"/> <!-- Color madera -->
+                </material>
+            </visual>
+            <xacro:inertial_box mass="${box_mass}" x="${box_largo}" y="${box_ancho}" z="${box_altura}">
+                <origin xyz="0.01 0.0 0.0015" rpy="0.0 0.0 0.0"/>
+            </xacro:inertial_box>
+            <collision>
+                <origin xyz="0.01 0.0 0.0015" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <box size="${box_largo} ${box_ancho} ${box_altura}"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="base_box_joint" type="fixed">
+            <origin xyz="-0.21 0.0 0.76" rpy="0.0 0.0 0.0"/>
+            <parent link="base_link"/>
+            <child link="box_link"/>
+
+        </joint>
+    
+    </xacro:macro>  
+    
+
 </robot>

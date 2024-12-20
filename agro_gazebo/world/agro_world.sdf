@@ -10,10 +10,10 @@
     <plugin name='gz::sim::systems::Imu' filename='gz-sim-imu-system'/>
     <plugin name='gz::sim::systems::NavSat' filename='gz-sim-navsat-system'/>
     <plugin name='gz::sim::systems::Sensors' filename='gz-sim-sensors-system'/>
-    <physics name='1ms' type='ignored'>
-      <max_step_size>0.002</max_step_size>
+    <physics name='4ms' type='ignored'>
+      <max_step_size>0.004</max_step_size>
       <real_time_factor>1</real_time_factor>
-      <real_time_update_rate>500</real_time_update_rate>
+      <real_time_update_rate>250</real_time_update_rate>
     </physics>
     <plugin name='gz::sim::systems::Physics' filename='gz-sim-physics-system'/>
     <plugin name='gz::sim::systems::UserCommands' filename='gz-sim-user-commands-system'/>
@@ -84,48 +84,35 @@
       <pose>0 0 0 0 0 0</pose>
       <self_collide>false</self_collide>
     </model>
+
     <include>
-      <uri>model://Verde</uri>
-      <name>Verde</name>
-      <pose>0.5 5.5 0 0 0 0</pose>
+      <uri>model://Hilera</uri>
+      <name>Hilera_1</name>
+      <pose>0.0 0.0 0 0 0 0</pose>
     </include>
 
     <include>
-      <uri>model://Verde Limon</uri>
-      <name>Verde Limon</name>
-      <pose>0.5 1.0 0 0 0 0</pose>
-    </include>
-    <include>
-      <uri>model://Malogrado</uri>
-      <name>Malogrado</name>
-      <pose>0.5 2.5 0 0 0 0</pose>
-    </include>
-    <include>
-      <uri>model://Verde Limon</uri>
-      <name>Melon</name>
-      <pose>0.5 4.0 0 0 0 0</pose>
+      <uri>model://Hilera</uri>
+      <name>Hilera_2</name>
+      <pose>3.5 0.0 0 0 0 0</pose>
     </include>
 
     <include>
-      <uri>model://Verde Limon</uri>
-      <name>Verde Limon_0</name>
-      <pose>3.5 1.0 0 0 0 0</pose>
-    </include>
-    <include>
-      <uri>model://Malogrado</uri>
-      <name>Malogrado_0</name>
-      <pose>3.5 2.5 0 0 0 0</pose>
-    </include>
-    <include>
-      <uri>model://Melon</uri>
-      <name>Melon_0</name>
-      <pose>3.5 4.0 0 0 0 0</pose>
+      <uri>model://Hilera</uri>
+      <name>Hilera_3</name>
+      <pose>7.0 0.0 0 0 0 0</pose>
     </include>
 
     <include>
-      <uri>model://Melon</uri>
-      <name>Verde_0</name>
-      <pose>3.5 5.5 0 0 0 0</pose>
+      <uri>model://Hilera</uri>
+      <name>Hilera_4</name>
+      <pose>10.5 0.0 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://Hilera</uri>
+      <name>Hilera_5</name>
+      <pose>14.0 0.0 0 0 0 0</pose>
     </include>
 
     <light name='sun' type='directional'>

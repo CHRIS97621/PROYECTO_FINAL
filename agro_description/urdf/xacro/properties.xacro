@@ -4,7 +4,7 @@
     <!-- sizes-->
     <xacro:property name="wheel_radius" value="0.0601" />
     <xacro:property name="wheel_length" value="0.0615" />
-    <xacro:property name="wheel_mass" value="0.2" />
+    <xacro:property name="wheel_mass" value="0.4" />
 
     <xacro:property name="base_altura" value="0.16" />
     <xacro:property name="base_largo" value="0.5" />
@@ -14,7 +14,7 @@
     <xacro:property name="chassis_altura" value="0.1596" />
     <xacro:property name="chassis_largo" value="0.46" />
     <xacro:property name="chassis_ancho" value="0.44" />
-    <xacro:property name="chassis_mass" value="0.2" />
+    <xacro:property name="chassis_mass" value="2.0" />
 
     <xacro:property name="soporte_altura" value="0.6" />
     <xacro:property name="soporte_largo" value="0.02" />
@@ -29,21 +29,26 @@
     <xacro:property name="imu_altura" value="0.02" />
     <xacro:property name="imu_largo" value="0.02" />
     <xacro:property name="imu_ancho" value="0.02" />
-    <xacro:property name="imu_mass" value="0.1" />
+    <xacro:property name="imu_mass" value="0.001" />
 
     <xacro:property name="gps_altura" value="0.02" />
     <xacro:property name="gps_largo" value="0.02" />
     <xacro:property name="gps_ancho" value="0.02" />
-    <xacro:property name="gps_mass" value="0.1" />
+    <xacro:property name="gps_mass" value="0.001" />
 
     <xacro:property name="lidar_altura" value="0.05" />
     <xacro:property name="lidar_largo" value="0.05" />
     <xacro:property name="lidar_ancho" value="0.05" />
-    <xacro:property name="lidar_mass" value="0.1" />
+    <xacro:property name="lidar_mass" value="0.001" />
+
+    <xacro:property name="box_altura" value="0.2" />
+    <xacro:property name="box_largo" value="0.02" />
+    <xacro:property name="box_ancho" value="0.02" />
+    <xacro:property name="box_mass" value="0.3" />
 
     <xacro:property name="camara_altura" value="0.02" />
     <xacro:property name="camara_largo" value="0.02" />
     <xacro:property name="camara_ancho" value="0.02" />
-    <xacro:property name="camara_mass" value="0.1" />
+    <xacro:property name="camara_mass" value="0.001" />
 </robot>
 

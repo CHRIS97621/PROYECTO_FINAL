@@ -36,9 +36,10 @@ controller_server:
       stateful: False
       plugin: "nav2_controller::SimpleGoalChecker"
       # Tolerancia para cumplir los criterios de finalización del objetivo (m).
-      xy_goal_tolerance: 0.25
+      xy_goal_tolerance: 0.50
       # Tolerancia para cumplir los criterios de cumplimiento de objetivos (rad).
       yaw_goal_tolerance: 0.1
+      stateful: false
       #trans_stopped_velocity: 0.25   # m/s
       #rot_stopped_velocity: 0.25    # rad/s
     # DWB parameters
@@ -60,11 +61,11 @@ controller_server:
       #------------Velocidades--------------
       min_vel_x: 0.0
       min_vel_y: 0.0
-      max_vel_x: 0.25
+      max_vel_x: 0.75
       max_vel_y: 0.0
-      max_vel_theta: 1.0
+      max_vel_theta: 2.0
       min_speed_xy: 0.0
-      max_speed_xy: 0.25
+      max_speed_xy: 0.75
       min_speed_theta: 0.14
       #------------Aceleraciones--------------
       acc_lim_x: 2.5

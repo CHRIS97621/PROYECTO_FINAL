@@ -7,9 +7,9 @@ enable_antialiasing: true
 show_displays: true
 show_status_bar: true
 show_capture_tools: true
-window_width: 1850
-window_height: 1016
-view_scale: 0.318630695
+window_width: 1717
+window_height: 940
+view_scale: 0.0496741235
 offset_x: -17.9132328
 offset_y: -4.97170019
 use_latest_transforms: true
@@ -33,7 +33,7 @@ displays:
     config:
       visible: true
       collapsed: false
-      topic: clicked_point
+      topic: goal_pose_gps
       output_frame: wgs84
   - type: mapviz_plugins/tf_frame
     name: new display
@@ -57,6 +57,48 @@ displays:
       draw_style: points
       position_tolerance: 0
       buffer_size: 1
+      qos_depth: 10
+      qos_history: 1
+      qos_reliability: 1
+      qos_durability: 2
+  - type: mapviz_plugins/path
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      topic: /path
+      color: "#55007f"
+      qos_depth: 10
+      qos_history: 1
+      qos_reliability: 1
+      qos_durability: 2
+  - type: mapviz_plugins/path
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      topic: /plan
+      color: "#005500"
+      qos_depth: 10
+      qos_history: 1
+      qos_reliability: 1
+      qos_durability: 2
+  - type: mapviz_plugins/odometry
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      topic: /odometry/global
+      color: "#ff0000"
+      draw_style: lines
+      position_tolerance: 0
+      buffer_size: 0
+      show_laps: false
+      show_covariance: false
+      show_all_covariances: false
+      static_arrow_sizes: false
+      arrow_size: 25
+      show_timestamps: 0
       qos_depth: 10
       qos_history: 1
       qos_reliability: 1

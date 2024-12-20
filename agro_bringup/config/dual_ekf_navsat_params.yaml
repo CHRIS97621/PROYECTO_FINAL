@@ -138,7 +138,7 @@ ekf_filter_node_map:
 
 navsat_transform:
   ros__parameters:
-    frequency: 20.0
+    frequency: 5.0
     delay: 3.0
     magnetic_declination_radians: 0.0
     yaw_offset: 0.0
@@ -147,3 +147,4 @@ navsat_transform:
     publish_filtered_gps: true
     use_odometry_yaw: false
     wait_for_datum: false
+    broadcast_utm_transform_as_parent_frame_: false

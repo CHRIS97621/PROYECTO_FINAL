@@ -22,7 +22,9 @@ install(PROGRAMS
   scripts/plot2_odometry.py
   scripts/prueba_fusion.py
   scripts/remaping_mapviz_rviz.py
-  
+  scripts/publish_gps_mapviz.py
+  scripts/navigate_through_poses.py
+  scripts/logger_waypoints.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

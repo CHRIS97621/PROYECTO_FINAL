@@ -96,7 +96,7 @@ def generate_launch_description():
             name='bt_navigator',
             output='screen',
             emulate_tty=True,
-            parameters=[bt_navigator_yaml]
+            parameters=[bt_navigator_yaml,{'default_nav_through_poses_bt_xml':config_bt_poses_xml_file }]
     )
 
     nav2_lifecycle_manager = Node(

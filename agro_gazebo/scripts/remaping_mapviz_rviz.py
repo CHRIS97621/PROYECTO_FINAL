@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import rclpy
+import rclpy.logging
 from rclpy.node import Node
 from geometry_msgs.msg import PointStamped
 from geometry_msgs.msg import PoseStamped
@@ -16,7 +17,6 @@ class PointProcessor(Node):
             self.point_callback,
             10
         )
-        self.subscription  # Evitar que el garbage collector elimine la suscripción
 
         # Publicador al tópico de salida
         self.publisher = self.create_publisher(
@@ -28,6 +28,7 @@ class PointProcessor(Node):
     def point_callback(self, msg):
         self.get_logger().info(f'Recibido punto: [x: {msg.point.x}, y: {msg.point.y}, z: {msg.point.z}]')
 
+        self.get_logger.info('Se recivio el punto')
         # Procesar el mensaje recibido (por ejemplo, incrementar las coordenadas)
         new_msg = PoseStamped()
         new_msg.header = msg.header  # Copiar el encabezado para mantener la información temporal
