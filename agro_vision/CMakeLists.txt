@@ -33,7 +33,13 @@ find_package(image_transport REQUIRED)
 # Install py executables
 install(PROGRAMS
   scripts/vision_node.py
+  scripts/vision_node2.py
   scripts/detector_node.py
+  scripts/tfcoordenadas.py
+  scripts/tfcoordenadas2.py
+  scripts/tfcoordenadas3.py
+  scripts/map_heat.py
+  scripts/map_heat2.py
  
  
   DESTINATION lib/${PROJECT_NAME}

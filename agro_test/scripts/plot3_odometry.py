@@ -55,9 +55,13 @@ class OdomSubscriber(Node):
         self.ax.legend()
         self.ax.grid()
 
+        # Autoescalado
+        self.ax.set_autoscaley_on(True)  
+        self.ax.set_autoscalex_on(True) 
+
         # Fijar los límites del gráfico
-        self.ax.set_xlim(-10, 10)  # Límites de -10m a 10m en el eje X
-        self.ax.set_ylim(-10, 10)  # Límites de -10m a 10m en el eje Y
+        #self.ax.set_xlim(-10, 10)  # Límites de -10m a 10m en el eje X
+        #self.ax.set_ylim(-10, 10)  # Límites de -10m a 10m en el eje Y
 
         # Manejo de cierre de la gráfica
         self.fig.canvas.mpl_connect('close_event', self.handle_close)

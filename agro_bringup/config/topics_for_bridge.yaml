@@ -28,11 +28,11 @@
   gz_type_name: gz.msgs.CameraInfo
   direction: GZ_TO_ROS
 
-#- ros_topic_name: "/world/empty/pose/info"
-#  gz_topic_name: "/world/empty/pose/info"
-#  ros_type_name: geometry_msgs/msg/PoseArray
-#  gz_type_name: gz.msgs.Pose_V
-#  direction: GZ_TO_ROS
+- ros_topic_name: "/world/empty/pose/info"
+  gz_topic_name: "/world/empty/pose/info"
+  ros_type_name: geometry_msgs/msg/PoseArray
+  gz_type_name: gz.msgs.Pose_V
+  direction: GZ_TO_ROS
 
 - ros_topic_name: "/scan"
   gz_topic_name: "/scan"
