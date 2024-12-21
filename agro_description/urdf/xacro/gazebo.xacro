@@ -17,10 +17,6 @@
                 <publish_nested_model_pose>true</publish_nested_model_pose>
             </plugin>
         </gazebo>
-
-
-
-
         <xacro:macro name="ros2_control" params="wheel">
             <joint name="${wheel}_joint">
             <command_interface name="velocity">

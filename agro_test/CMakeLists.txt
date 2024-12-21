@@ -21,14 +21,15 @@ install(PROGRAMS
   scripts/plot_odometry.py
   scripts/plot2_odometry.py
   scripts/plot3_odometry.py
-  scripts/prueba_fusion.py
-  scripts/prueba2_fusion.py
+  scripts/speed_ekf.py
+  scripts/speed_ekf2.py
 
   DESTINATION lib/${PROJECT_NAME}
 )
 
 install(DIRECTORY
-  #launch
+  world
+  launch
   DESTINATION share/${PROJECT_NAME}
 )
 
