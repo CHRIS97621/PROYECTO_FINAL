@@ -17,6 +17,7 @@ rosdep install -i --from-path src --rosdistro $ROS_DISTRO -y
 ### Lanzar simualción y ekf
 
 ```bash
+source install/setup.bash
 ros2 launch agro_gazebo sim.launch.py
 ```
 

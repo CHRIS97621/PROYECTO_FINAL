@@ -3,7 +3,7 @@
 import rclpy
 from rclpy.node import Node
 from nav_msgs.msg import Odometry
-from geometry_msgs.msg import PoseArray  # Importar PoseArray para el puente de Gazebo
+from geometry_msgs.msg import PoseStamped  # Importar PoseArray para el puente de Gazebo
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
@@ -25,8 +25,8 @@ class OdomSubscriber(Node):
             10)
 
         self.pose_sub = self.create_subscription(
-            PoseArray,
-            '/world/empty/pose/info',
+            PoseStamped,
+            '/robot_agro/pose',
             self.pose_callback,
             10)
 
@@ -56,12 +56,12 @@ class OdomSubscriber(Node):
         self.ax.grid()
 
         # Autoescalado
-        self.ax.set_autoscaley_on(True)  
-        self.ax.set_autoscalex_on(True) 
+        #self.ax.set_autoscaley_on(True)  
+        #self.ax.set_autoscalex_on(True) 
 
         # Fijar los límites del gráfico
-        #self.ax.set_xlim(-10, 10)  # Límites de -10m a 10m en el eje X
-        #self.ax.set_ylim(-10, 10)  # Límites de -10m a 10m en el eje Y
+        self.ax.set_xlim(-10, 10)  # Límites de -10m a 10m en el eje X
+        self.ax.set_ylim(-10, 10)  # Límites de -10m a 10m en el eje Y
 
         # Manejo de cierre de la gráfica
         self.fig.canvas.mpl_connect('close_event', self.handle_close)
@@ -79,10 +79,9 @@ class OdomSubscriber(Node):
         self.sim_y.append(msg.pose.pose.position.y)
 
     def pose_callback(self, msg):
-        robot_index = 1  # Cambia esto si `robot_agro` no está en el índice 0
         try:
-            x = msg.poses[robot_index].position.x
-            y = msg.poses[robot_index].position.y
+            x = msg.pose.position.x
+            y = msg.pose.position.y
             self.robot_agro_x.append(x)
             self.robot_agro_y.append(y)
         except IndexError:

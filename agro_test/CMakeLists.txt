@@ -28,7 +28,7 @@ install(PROGRAMS
 )
 
 install(DIRECTORY
-  launch
+  #launch
   DESTINATION share/${PROJECT_NAME}
 )
 
