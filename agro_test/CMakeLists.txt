@@ -28,8 +28,8 @@ install(PROGRAMS
 )
 
 install(DIRECTORY
-  world
-  launch
+  #world
+  #launch
   DESTINATION share/${PROJECT_NAME}
 )
 

@@ -26,6 +26,7 @@
   <exec_depend>nav2_rotation_shim_controller</exec_depend>
   <exec_depend>nav2_core</exec_depend>
   <exec_depend>nav2_dwb_controller</exec_depend>
+  <exec_depend>nav2_rviz_plugins</exec_depend>
 
   <export>
     <build_type>ament_python</build_type>
