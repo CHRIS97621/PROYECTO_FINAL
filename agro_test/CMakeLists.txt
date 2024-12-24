@@ -24,6 +24,9 @@ install(PROGRAMS
   scripts/speed_ekf.py
   scripts/speed_ekf2.py
 
+  #firmware scripts
+  scripts/plot_control.py
+
   DESTINATION lib/${PROJECT_NAME}
 )
 
