@@ -38,6 +38,7 @@ install(PROGRAMS
   scripts/tfcoordenadas.py
   scripts/tfcoordenadas2.py
   scripts/tfcoordenadas3.py
+  scripts/gradient.py
   scripts/map_heat.py
   scripts/map_heat2.py
  

@@ -6,7 +6,7 @@ def generate_launch_description():
         # Nodo vision_node.py
         Node(
             package='agro_vision',
-            executable='vision_node',
+            executable='vision_node2.py',
             name='cacao_detector_node',
             output='screen',
             parameters=[
@@ -17,7 +17,7 @@ def generate_launch_description():
         # Nodo tfcoordenadas3.py
         Node(
             package='agro_vision',
-            executable='tfcoordenadas3',
+            executable='gradient.py',
             name='heatmap_node',
             output='screen',
             parameters=[
