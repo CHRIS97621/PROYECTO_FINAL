@@ -5,11 +5,16 @@
   <!--  variables -->
   <!-- ************************ -->
   
+    <!-- Arguments-->
+    <xacro:arg name="use_sim" default="false" />
+    <xacro:property name="use_sim" value="$(arg use_sim)" />
+
 
     <xacro:include filename="$(find agro_description)/urdf/xacro/wheel.xacro"/>
     <xacro:include filename="$(find agro_description)/urdf/xacro/gazebo.xacro"/>
     <xacro:include filename="$(find agro_description)/urdf/xacro/sensors.xacro"/>
     <xacro:include filename="$(find agro_description)/urdf/xacro/chassis.xacro"/>
+    <xacro:include filename="$(find agro_description)/urdf/xacro/ros2_control.xacro"/>
 
      <!-- Base footprint-->
     <link name= "base_footprint">
@@ -52,10 +57,11 @@
     <xacro:lidar_sensor/>  
     
     <!-- ros2 control-->
-    <xacro:ros2_control/>
+    <xacro:ros2_control_gazebo use_sim="$(arg use_sim)"/>
+    <xacro:agro_robot_ros2_control use_sim="$(arg use_sim)"/>
 
     <!-- gazebo-->
-    <xacro:plugins_gazebo/>
+    <xacro:plugins_gazebo use_sim="$(arg use_sim)"/>
 
     <!--xacro:wheels_friction side="front_left"/>
     <xacro:wheels_friction side="front_right"/>

@@ -1,37 +1,22 @@
 #include "encoder.h"
+#include "map"
 
-Encoder* instance = nullptr;
+
 // Constructor
 Encoder::Encoder(int pinA, int pinB)
-    : pinA(pinA), pinB(pinB), pulseCount_(0), position(0.0), speed(0.0), lastTime_(0) {
+    : pinA(pinA), pinB(pinB), pulseCount_(0), positionMotor_(0.0), speed_(0.0), lastTime_(0) {
 
-        instance = this;
         PPR = 1320;
+        lowPassFilter = std::make_shared<LowPassFilter>(0.2);
     }
 
 // Inicializa el encoder
 void Encoder::init() {
-    pinMode(pinA, INPUT_PULLUP);
-    pinMode(pinB, INPUT_PULLUP);
-    attachInterrupt(pinA, isrA, CHANGE); 
-    attachInterrupt(pinB, isrB, CHANGE);
 
     Serial.println("Encoder initialized");
+    lowPassFilter->init();
 }
 
-// Función de interrupción para actualizar el contador de pulsos
-void IRAM_ATTR Encoder::isrA() {
-    if (instance) {
-        instance->updateA();
-    }
-}
-
-// ISR estática para el pin B
-void IRAM_ATTR Encoder::isrB() {
-    if (instance) {
-        instance->updateB();
-    }
-}
 
 
 // Maneja los cambios en el pin A
@@ -64,26 +49,52 @@ float Encoder::calculateSpeed() {
     unsigned long currentTime = millis();
     unsigned long deltaTime = currentTime - lastTime_;
 
-    Serial.print("El delta de tiempo es ");
-    Serial.println(deltaTime);
-    speed = (pulseCount_ - lastPulseCount_)*2*M_PI / (deltaTime*1.320); // Pulsos por segundo
+    // Hallo la velocidad
+    speed_ = (pulseCount_ - lastPulseCount_)*2.0*M_PI*1000.0 / (deltaTime*PPR);
+
     //actualizo valores
     lastTime_ = currentTime;
     lastPulseCount_ = pulseCount_;
-    
-    return speed;
+
+    //calculo la posición actual
+    positionMotor_ = pulseCount_*2*M_PI/1320.0;
+
+    return speed_;
+}
+
+float Encoder::calculateSpeedFiltered(float speed) {
+
+    float current_speed_filtered = lowPassFilter->update(speed);
+    speed_filtered_ = current_speed_filtered;
+    return current_speed_filtered;
 }
 
 // Devuelve la posición actual (basado en pulsos acumulados)
-float Encoder::getPosition() {
+float Encoder::getCount() {
     return pulseCount_;
+}
+
+// Devuelve la velocidad actual del robot
+float Encoder::getSpeed() {
+    return speed_;
+}
+
+// Devuelve la velocidad actual del robot
+float Encoder::getPosition() {
+    return positionMotor_;
+}
+
+// Devuelve la velocidad filtrada actual del robot
+float Encoder::getSpeedFiltered() {
+    return speed_filtered_;
 }
 
 // Reinicia los valores del encoder
 void Encoder::reset() {
+    lowPassFilter->reset();
     pulseCount_ = 0;
     lastTime_ = 0;
     lastPulseCount_ = 0;
-    position = 0.0;
-    speed = 0.0;
+    speed_ = 0.0;
+    positionMotor_ = 0.0;
 }

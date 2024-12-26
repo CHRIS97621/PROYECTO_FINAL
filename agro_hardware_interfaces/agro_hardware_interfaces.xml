@@ -1,0 +1,10 @@
+<library path="agro_hardware_interfaces">
+  <class name="agro_hardware_interfaces/AgroSystem"
+         type="agro_hardware_interfaces::AgroSystem"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Hardware system controller for Agrobot
+    </description>
+  </class>
+
+</library>

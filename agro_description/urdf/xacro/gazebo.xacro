@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robot_name">
-    <xacro:macro name="ros2_control">
-
+    <xacro:macro name="ros2_control_gazebo" params="use_sim">
+      <xacro:if value="$(arg use_sim)">  
         <gazebo>
-            <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+            <!--plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin"-->
+             <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
                 <parameters>$(find agro_bringup)/config/diff_drive_controller.yaml</parameters>
             </plugin>
             <plugin
@@ -27,16 +28,21 @@
             </joint>
         </xacro:macro>
 
-        <ros2_control name="GazeboSimSystem" type="system">
+        <!--ros2_control name="GazeboSimSystem" type="system"-->
+        <ros2_control name="IgnitionSystem" type="system">
             <hardware>
-              <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+              <!--plugin>gz_ros2_control/GazeboSimSystem</plugin-->
+              <plugin>ign_ros2_control/IgnitionSystem</plugin>
             </hardware>
             <xacro:ros2_control wheel="front_left"/>
             <xacro:ros2_control wheel="front_right"/>
             <xacro:ros2_control wheel="near_left"/>
             <xacro:ros2_control wheel="near_right"/>
         </ros2_control>
+      </xacro:if>
   </xacro:macro>  
+
+  
   <!-- friction wheels -->
   <xacro:macro name="wheels_friction" params="side">
 
@@ -79,138 +85,139 @@
 
   </xacro:macro >
 
-  <xacro:macro name="plugins_gazebo">
+  <xacro:macro name="plugins_gazebo" params="use_sim">
 
     <!-- gps base_footprint -->
+    <xacro:if value="$(arg use_sim)">  
+      <gazebo reference="gps_link">
+          <sensor name="gps" type="navsat">
+            <always_on>true</always_on>
+            <update_rate>5</update_rate>
+            <pose>0 0 0 0 0 0</pose>
+            <gz_frame_id>gps_link</gz_frame_id>
+            <gps>
+              <position_sensing>
+                <horizontal>
+                  <noise type="gaussian">
+                    <mean>0.0</mean>
+                    <stddev>0.00000001</stddev>
+                  </noise>
+                </horizontal>
+                <vertical>
+                  <noise type="gaussian">
+                    <mean>0.0</mean>
+                    <stddev>0.00000001</stddev>
+                  </noise>
+                </vertical>
+              </position_sensing>
+            </gps>
+            <topic>gps/raw</topic>
+          </sensor>
+      </gazebo>
 
-    <gazebo reference="gps_link">
-        <sensor name="gps" type="navsat">
+      <!-- Gauss noise macro -->
+      <xacro:macro name="gauss_noise"
+        params="mean:=0.0 stddev:=0.0 bias_mean:=0.0 bias_stddev:=0.0 precision:=0.0">
+        <noise type="gaussian">
+          <mean>${mean}</mean>
+          <stddev>${stddev}</stddev>
+          <bias_mean>${bias_mean}</bias_mean>
+          <bias_stddev>${bias_stddev}</bias_stddev>
+          <precision>${precision}</precision>
+        </noise>
+      </xacro:macro>
+
+      <!-- IMU -->
+
+      <gazebo reference="imu_link">
+        <sensor name="imu_sensor" type="imu">
           <always_on>true</always_on>
-          <update_rate>5</update_rate>
-          <pose>0 0 0 0 0 0</pose>
-          <gz_frame_id>gps_link</gz_frame_id>
-          <gps>
-            <position_sensing>
-              <horizontal>
-                <noise type="gaussian">
-                  <mean>0.0</mean>
-                  <stddev>0.00000001</stddev>
-                </noise>
-              </horizontal>
-              <vertical>
-                <noise type="gaussian">
-                  <mean>0.0</mean>
-                  <stddev>0.00000001</stddev>
-                </noise>
-              </vertical>
-            </position_sensing>
-          </gps>
-           <topic>gps/raw</topic>
-        </sensor>
-    </gazebo>
-
-    <!-- Gauss noise macro -->
-    <xacro:macro name="gauss_noise"
-      params="mean:=0.0 stddev:=0.0 bias_mean:=0.0 bias_stddev:=0.0 precision:=0.0">
-      <noise type="gaussian">
-        <mean>${mean}</mean>
-        <stddev>${stddev}</stddev>
-        <bias_mean>${bias_mean}</bias_mean>
-        <bias_stddev>${bias_stddev}</bias_stddev>
-        <precision>${precision}</precision>
-      </noise>
-    </xacro:macro>
-
-    <!-- IMU -->
-
-    <gazebo reference="imu_link">
-      <sensor name="imu_sensor" type="imu">
-        <always_on>true</always_on>
-        <update_rate>20</update_rate>
-        <topic>imu</topic>
-        <visualize>false</visualize>
-        <enable_metrics>false</enable_metrics>
-        <gz_frame_id>imu_link</gz_frame_id>
-        <imu>
-          <angular_velocity>
-            <!-- rad/s | no bias_mean in datasheet -->
-            <x>
-              <xacro:gauss_noise stddev="5.24e-3" bias_mean="2.0e-3" precision="1.07e-3" />
-            </x>
-            <y>
-              <xacro:gauss_noise stddev="5.24e-3" bias_mean="2.0e-3" precision="1.07e-3" />
-            </y>
-            <z>
-              <xacro:gauss_noise stddev="5.24e-3" bias_mean="2.0e-3" precision="1.07e-3" />
-            </z>
-          </angular_velocity>
-          <linear_acceleration>
-            <!-- m/s^2 | no bias_mean in datasheet -->
-            <x>
-              <xacro:gauss_noise stddev="1.86e-3" bias_mean="1.0e-3" precision="2.40e-3" />
-            </x>
-            <y>
-              <xacro:gauss_noise stddev="1.86e-3" bias_mean="1.0e-3" precision="2.40e-3" />
-            </y>
-            <z>
-              <xacro:gauss_noise stddev="1.86e-3" bias_mean="1.0e-3" precision="2.40e-3" />
-            </z>
-          </linear_acceleration>
-        </imu>
-      </sensor>
-    </gazebo>
-    <!-- Camera -->
-    <gazebo reference="camera_link">
-      <sensor name="camera" type="camera">
-          <always_on>1</always_on>
           <update_rate>20</update_rate>
+          <topic>imu</topic>
           <visualize>false</visualize>
-          <topic>camera</topic>
-          <gz_frame_id>camera_link</gz_frame_id>
-          <camera>
-            <horizontal_fov>1.047</horizontal_fov>
-            <image>
-              <width>720</width>
-              <height>480</height>
-            </image>
-            <clip>
-              <near>0.1</near>
-              <far>100</far>
-            </clip>
-          </camera>
-      </sensor> 
-    </gazebo>
-    <!-- Laser -->
-    <gazebo reference="laser_link">
-      <sensor name='gpu_lidar' type='gpu_lidar'>"
-          <topic>scan</topic>
-          <update_rate>20</update_rate>
-          <visualize>true</visualize>
-          <gz_frame_id>laser_link</gz_frame_id>
-          <ray>
-              <scan>
-                  <horizontal>
-                      <samples>640</samples>
-                      <resolution>1</resolution>
-                      <min_angle>-3.096263</min_angle>
-                      <max_angle>3.096263</max_angle>
-                  </horizontal>
-                  <vertical>
-                      <samples>1</samples>
-                      <resolution>0.01</resolution>
-                      <min_angle>0</min_angle>
-                      <max_angle>0</max_angle>
-                  </vertical>
-              </scan>
-              <range>
-                  <min>0.08</min>
-                  <max>50.0</max>
-                  <resolution>0.01</resolution>
-              </range>
-          </ray>
-          <always_on>1</always_on>
-          <visualize>true</visualize>
-      </sensor>
-    </gazebo>
+          <enable_metrics>false</enable_metrics>
+          <gz_frame_id>imu_link</gz_frame_id>
+          <imu>
+            <angular_velocity>
+              <!-- rad/s | no bias_mean in datasheet -->
+              <x>
+                <xacro:gauss_noise stddev="5.24e-3" bias_mean="2.0e-3" precision="1.07e-3" />
+              </x>
+              <y>
+                <xacro:gauss_noise stddev="5.24e-3" bias_mean="2.0e-3" precision="1.07e-3" />
+              </y>
+              <z>
+                <xacro:gauss_noise stddev="5.24e-3" bias_mean="2.0e-3" precision="1.07e-3" />
+              </z>
+            </angular_velocity>
+            <linear_acceleration>
+              <!-- m/s^2 | no bias_mean in datasheet -->
+              <x>
+                <xacro:gauss_noise stddev="1.86e-3" bias_mean="1.0e-3" precision="2.40e-3" />
+              </x>
+              <y>
+                <xacro:gauss_noise stddev="1.86e-3" bias_mean="1.0e-3" precision="2.40e-3" />
+              </y>
+              <z>
+                <xacro:gauss_noise stddev="1.86e-3" bias_mean="1.0e-3" precision="2.40e-3" />
+              </z>
+            </linear_acceleration>
+          </imu>
+        </sensor>
+      </gazebo>
+      <!-- Camera -->
+      <gazebo reference="camera_link">
+        <sensor name="camera" type="camera">
+            <always_on>1</always_on>
+            <update_rate>20</update_rate>
+            <visualize>false</visualize>
+            <topic>camera</topic>
+            <gz_frame_id>camera_link</gz_frame_id>
+            <camera>
+              <horizontal_fov>1.047</horizontal_fov>
+              <image>
+                <width>720</width>
+                <height>480</height>
+              </image>
+              <clip>
+                <near>0.1</near>
+                <far>100</far>
+              </clip>
+            </camera>
+        </sensor> 
+      </gazebo>
+      <!-- Laser -->
+      <gazebo reference="laser_link">
+        <sensor name='gpu_lidar' type='gpu_lidar'>"
+            <topic>scan</topic>
+            <update_rate>20</update_rate>
+            <visualize>true</visualize>
+            <gz_frame_id>laser_link</gz_frame_id>
+            <ray>
+                <scan>
+                    <horizontal>
+                        <samples>640</samples>
+                        <resolution>1</resolution>
+                        <min_angle>-3.096263</min_angle>
+                        <max_angle>3.096263</max_angle>
+                    </horizontal>
+                    <vertical>
+                        <samples>1</samples>
+                        <resolution>0.01</resolution>
+                        <min_angle>0</min_angle>
+                        <max_angle>0</max_angle>
+                    </vertical>
+                </scan>
+                <range>
+                    <min>0.08</min>
+                    <max>50.0</max>
+                    <resolution>0.01</resolution>
+                </range>
+            </ray>
+            <always_on>1</always_on>
+            <visualize>true</visualize>
+        </sensor>
+      </gazebo>
+    </xacro:if>
   </xacro:macro>
 </robot>

@@ -1,0 +1,5 @@
+agro_interfaces/Motors current_control
+agro_interfaces/Motors current_speed
+agro_interfaces/Motors current_speed_filtered
+agro_interfaces/Motors current_error
+agro_interfaces/Motors setpoint

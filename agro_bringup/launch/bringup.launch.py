@@ -7,6 +7,9 @@ from launch_ros.substitutions import FindPackageShare
 from launch_ros.actions import Node
 from launch.event_handlers import OnProcessExit
 from ament_index_python.packages import get_package_share_directory
+from launch_ros.parameter_descriptions import ParameterValue
+
+from launch.conditions import IfCondition, UnlessCondition
 
 def generate_launch_description():
 
@@ -24,9 +27,30 @@ def generate_launch_description():
     path_bringup = PathJoinSubstitution([FindPackageShare(package_bringup),'config','agro.urdf.xacro'])
 
     topics_for_bridge = PathJoinSubstitution([FindPackageShare(package_bringup),'config','topics_for_bridge.yaml'])
-    #~~~~~~~~~~~~~~~~~~~~~~~~ NODES ~~~~~~~~~~~~~~~~~~~~~~~~~~~+
 
-    robot_description_content = Command([PathJoinSubstitution([FindExecutable(name="xacro")])," ",path_xacro])
+    #~~~~~~~~~~~~~~~~~~~~~~~~ ARGUMENTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~+
+
+    arg_use_sim = DeclareLaunchArgument(
+        'use_sim',
+        default_value= "false",
+        description='Use simlation or not'
+    )
+
+    config_use_sim = LaunchConfiguration('use_sim')
+
+
+    #~~~~~~~~~~~~~~~~~~~~~~~~ NODES ~~~~~~~~~~~~~~~~~~~~~~~~~~~+
+    robot_description_content = ParameterValue(Command(['xacro ', path_xacro, " use_sim:=",config_use_sim]), value_type=str)
+
+    robot_description = {"robot_description": robot_description_content}
+
+    robot_controllers = PathJoinSubstitution(
+        [
+            FindPackageShare("agro_bringup"),
+            "config",
+            "diff_drive_controller_copy.yaml",
+        ]
+    )
 
     robot_state_publisher = Node(
         package="robot_state_publisher",
@@ -34,26 +58,38 @@ def generate_launch_description():
         output="screen",
         parameters=[
             {"robot_description": robot_description_content},
-            {'use_sim_time': True}],
+            {'use_sim_time': config_use_sim}],
         emulate_tty=True,
     )
-
+     #~~~~~~~~~~~~~~~~~~~~~~~
     ros_bridge_node = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
         name="ros_gz_bridge",
         parameters=[{"config_file": topics_for_bridge},
-            {'use_sim_time': True}],
+            {'use_sim_time': config_use_sim}],
         output="screen",
-        emulate_tty="true"
-
+        emulate_tty="true",
+        condition=IfCondition(LaunchConfiguration("use_sim")),
     )
 
+    control_node = Node(
+        package="controller_manager",
+        executable="ros2_control_node",
+        parameters=[robot_description, robot_controllers],
+        remappings=[
+            ("~/motors_cmd", "/_motors_cmd"),
+            ("~/motors_response", "/_motors_response"),
+            ("/agro_base_controller/cmd_vel_unstamped", "/cmd_vel"),
+        ],
+        condition=UnlessCondition(LaunchConfiguration("use_sim")),
+    )
+     #~~~~~~~~~~~~~~~~~~~~~~~
     joint_state_broadcaster_spawner = Node(
         package="controller_manager",
         executable="spawner",
         parameters=[
-            {'use_sim_time': True}],
+            {'use_sim_time': config_use_sim}],
         arguments=[
             "joint_state_broadcaster",
             "--controller-manager-timeout",
@@ -61,7 +97,6 @@ def generate_launch_description():
         ],
         output= "screen"
     )
-
     robot_controller_spawner = Node(
         package="controller_manager",
         name="agro_base_controller",
@@ -72,7 +107,7 @@ def generate_launch_description():
             "120"
         ],
         parameters=[
-            {'use_sim_time': True}],
+            {'use_sim_time': config_use_sim}],
         output= "screen"
     )
     delay_robot_controller_spawner_after_joint_state_broadcaster_spawner = RegisterEventHandler(
@@ -100,9 +135,11 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
+        arg_use_sim,
+        control_node,
         robot_state_publisher,
         ros_bridge_node,
         joint_state_broadcaster_spawner,
         delay_robot_controller_spawner_after_joint_state_broadcaster_spawner,
-        delay_ekf_after_robot_controller_spawner
+        #delay_ekf_after_robot_controller_spawner
     ])

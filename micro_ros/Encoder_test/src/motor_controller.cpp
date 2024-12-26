@@ -1,34 +1,64 @@
 #include "motor_controller.h"
 
 // Constructor
-MotorController::MotorController(int pwm_pin, int dir_pin, int enable_pin, 
+MotorController::MotorController(int pwm_pin, int dir_pin, int enable_pin, int channel,
                                  int encoder_pin_a, int encoder_pin_b, 
                                  float kp, float ki, float kd)
-    : motor(pwm_pin, dir_pin, enable_pin), 
+    : motor(pwm_pin, dir_pin, enable_pin,channel), 
       encoder(encoder_pin_a, encoder_pin_b), 
-      pid(kp, ki, kd), 
-      setpoint(0),lowPassFilter(nullptr) {
-
-    lowPassFilter = new LowPassFilter(0.5); 
-
+      pid(kp, ki, kd){
+    
+    rate = 0.02;
+    setpoint = 0.0;
+    enable_control_ = false;
 }
+
+//Inicializo el motor controller
+void MotorController::init() {
+
+    
+    encoder.init();
+    motor.init();
+    pid.init();
+}
+
+//Inicializo el motor controller
+void MotorController::reset() {
+
+    encoder.reset();
+    motor.reset();
+    pid.reset();
+}
+
+
 
 // Configura la velocidad deseada
 void MotorController::setTargetSpeed(float speed) {
     setpoint = speed;
+    // le paso el setpoint a l pid
     pid.setSetpoint(speed);
 }
-void MotorController::init() {
-    encoder.init();
-    motor.init();
-}
+
 
 // Actualiza el control del motor
 void MotorController::update() {
-    float current_speed = encoder.calculateSpeed(); // Obtén la velocidad actual del encoder
-    float current_speed_filtered = lowPassFilter->update(current_speed);
-    float control_signal = pid.compute(current_speed_filtered); // Calcula la señal de control
 
-    // Controla la velocidad del motor usando la señal del PID
-    motor.setPwm(control_signal);
+    float current_speed = encoder.calculateSpeed(); // Obtén la velocidad actual del encoder
+    float current_speed_filtered = encoder.calculateSpeedFiltered(current_speed);
+    if(enable_control_ ){
+        float control_signal = pid.compute(current_speed_filtered,rate); // Calcula la señal de control
+        motor.setPwm(control_signal);
+    }    
+}
+
+// Actualiza el control del motor
+void MotorController::enableControl() {
+    MotorController::reset();
+    enable_control_ = true;
+}
+
+// Actualiza el control del motor
+void MotorController::disableControl() {
+    motor.stop();
+    enable_control_ = false;
 }

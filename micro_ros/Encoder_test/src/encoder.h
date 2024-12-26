@@ -2,33 +2,47 @@
 #define ENCODER_H
 
 #include <Arduino.h>
+#include "low_filter.h"
+#include "memory"
 
 class Encoder {
 
-public:
+private: 
+    int PPR;
+
+    float speed_; // Velocidad calculada (en unidades de tu elección)
+    float speed_filtered_; // Velocidad calculada (en unidades de tu elección)
+
     int pinA; // Pin para la señal A del encoder
     int pinB; // Pin para la señal B del encoder
+
     volatile long pulseCount_; // Contador de pulsos
-    long lastPulseCount_;
-
-    int PPR;
+    long lastPulseCount_;   // Ultimo contador de pulsos
+    
     unsigned long lastTime_; // Último tiempo para cálculo de velocidad
+    float positionMotor_; // Posición calculada en radianes7
 
-    float position; // Posición calculada (en unidades de tu elección)
-    float speed; // Velocidad calculada (en unidades de tu elección)
+public:
+
+    std::shared_ptr<LowPassFilter> lowPassFilter;   // Referencia al filtro
+
     // Constructor
     Encoder(int pinA, int pinB);
-
     // Métodos
     void init(); // Configura los pines y el interrupt
-    void update(); // Función de interrupción para contar pulsos
+    void reset(); // Reinicia el contador de pulsos y posición
+
     float calculateSpeed(); // Calcula la velocidad en base a los pulsos
-    float getPosition(); // Devuelve la posición
+    float calculateSpeedFiltered(float speed); // Calcula la velocidad en base a los pulsos
+
+    float getCount(); // Devuelve la posición
+    float getSpeed();
+    float getSpeedFiltered();
+    float getPosition();
+
+
     void updateA();
     void updateB();
-    void reset(); // Reinicia el contador de pulsos y posición
-    static void IRAM_ATTR isrA();
-    static void IRAM_ATTR isrB();
 
 };
 

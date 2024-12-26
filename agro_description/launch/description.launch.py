@@ -3,6 +3,7 @@ from launch import LaunchDescription
 from ament_index_python.packages import get_package_share_directory
 from launch.substitutions import LaunchConfiguration, Command, PathJoinSubstitution
 from launch_ros.parameter_descriptions import ParameterValue
+from launch.actions import DeclareLaunchArgument
 
 def generate_launch_description():
 
@@ -15,15 +16,27 @@ def generate_launch_description():
     robot_desc_path = PathJoinSubstitution([package_share,'urdf', 'agro.urdf.xacro'])
     rviz_file = PathJoinSubstitution([package_share,'rviz','display.rviz'])
     #rviz_file = PathJoinSubstitution(['rviz','display.rviz'])
+
+    #~~~~~~~~~~~~~~~~~~~~~~~~ ARGUMENTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~+
+
+    arg_use_sim = DeclareLaunchArgument(
+        'use_sim',
+        default_value= "False",
+        description='Use simlation or not'
+    )
+
+    config_use_sim = LaunchConfiguration('use_sim')
+
     # Convierto el archivo xacro a un string
-    robot_description = ParameterValue(Command(['xacro ', robot_desc_path]), value_type=str)
+    robot_description = ParameterValue(Command(['xacro ', robot_desc_path, " use_sim:=",config_use_sim]), value_type=str)
     
     robot_state_publisher = Node(
             package='robot_state_publisher',
             executable='robot_state_publisher',
             name='robot_state_publisher',
             emulate_tty=True,
-            parameters=[{'use_sim_time': False, 'robot_description':robot_description}],
+            parameters=[{'use_sim_time': False},
+                        {'robot_description':robot_description}],
             output='screen'
     )
     rviz = Node(
@@ -41,6 +54,7 @@ def generate_launch_description():
             output='screen'
           )
     return LaunchDescription([
+        arg_use_sim,
         robot_state_publisher,
         joint_state_publisher_gui,
         rviz
