@@ -3,8 +3,8 @@
     <xacro:macro name="ros2_control_gazebo" params="use_sim">
       <xacro:if value="$(arg use_sim)">  
         <gazebo>
-            <!--plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin"-->
-             <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+            <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+             <!--plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin"-->
                 <parameters>$(find agro_bringup)/config/diff_drive_controller.yaml</parameters>
             </plugin>
             <plugin
@@ -29,10 +29,10 @@
         </xacro:macro>
 
         <!--ros2_control name="GazeboSimSystem" type="system"-->
-        <ros2_control name="IgnitionSystem" type="system">
+        <ros2_control name="GaseboSystem" type="system">
             <hardware>
-              <!--plugin>gz_ros2_control/GazeboSimSystem</plugin-->
-              <plugin>ign_ros2_control/IgnitionSystem</plugin>
+              <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+              <!--plugin>ign_ros2_control/IgnitionSystem</plugin-->
             </hardware>
             <xacro:ros2_control wheel="front_left"/>
             <xacro:ros2_control wheel="front_right"/>
