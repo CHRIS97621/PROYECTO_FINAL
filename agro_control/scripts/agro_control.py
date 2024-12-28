@@ -16,14 +16,28 @@ class PointSubscriber(Node):
         super().__init__('point_subscriber')
         self.subscription = self.create_subscription(ControlStatus, 'control_info', self.listener_callback, 10)
         self.time = []
-        self.motor1_data = {
+        self.motorFL_data = {
             'velocidad': [],
             'control': [],
             'error': [],
             'setpoint': [],
             'velocidad_filtered': []
         }
-        self.motor2_data = {
+        self.motorFR_data = {
+            'velocidad': [],
+            'control': [],
+            'error': [],
+            'setpoint': [],
+            'velocidad_filtered': []
+        }
+        self.motorNL_data = {
+            'velocidad': [],
+            'control': [],
+            'error': [],
+            'setpoint': [],
+            'velocidad_filtered': []
+        }
+        self.motorNR_data = {
             'velocidad': [],
             'control': [],
             'error': [],
@@ -36,20 +50,35 @@ class PointSubscriber(Node):
         current_time = self.get_clock().now().nanoseconds / 1e9 - self.start_time
         self.time.append(current_time)
 
-        self.motor1_data['velocidad'].append(msg.current_speed.motor1)
-        self.motor1_data['control'].append(msg.current_control.motor1)
-        self.motor1_data['error'].append(msg.current_error.motor1)
-        self.motor1_data['setpoint'].append(msg.setpoint.motor1)
-        self.motor1_data['velocidad_filtered'].append(msg.current_speed_filtered.motor1)
+        self.motorFL_data['velocidad'].append(msg.current_speed.motor_fl)
+        self.motorFL_data['control'].append(msg.current_control.motor_fl)
+        self.motorFL_data['error'].append(msg.current_error.motor_fl)
+        self.motorFL_data['setpoint'].append(msg.setpoint.motor_fl)
+        self.motorFL_data['velocidad_filtered'].append(msg.current_speed_filtered.motor_fl)
 
-        self.motor2_data['velocidad'].append(msg.current_speed.motor2)
-        self.motor2_data['control'].append(msg.current_control.motor2)
-        self.motor2_data['error'].append(msg.current_error.motor2)
-        self.motor2_data['setpoint'].append(msg.setpoint.motor2)
-        self.motor2_data['velocidad_filtered'].append(msg.current_speed_filtered.motor2)
+        self.motorFR_data['velocidad'].append(msg.current_speed.motor_fr)
+        self.motorFR_data['control'].append(msg.current_control.motor_fr)
+        self.motorFR_data['error'].append(msg.current_error.motor_fr)
+        self.motorFR_data['setpoint'].append(msg.setpoint.motor_fr)
+        self.motorFR_data['velocidad_filtered'].append(msg.current_speed_filtered.motor_fr)
 
-        self.get_logger().info(f'Recibido: Velocidad1={msg.current_speed.motor1}, Control1={msg.current_control.motor1}, Error1={msg.current_error.motor1}')
-        self.get_logger().info(f'Recibido: Velocidad2={msg.current_speed.motor2}, Control2={msg.current_control.motor2}, Error2={msg.current_error.motor2}')
+        self.motorNL_data['velocidad'].append(msg.current_speed.motor_nl)
+        self.motorNL_data['control'].append(msg.current_control.motor_nl)
+        self.motorNL_data['error'].append(msg.current_error.motor_nl)
+        self.motorNL_data['setpoint'].append(msg.setpoint.motor_nl)
+        self.motorNL_data['velocidad_filtered'].append(msg.current_speed_filtered.motor_nl)
+
+        self.motorNR_data['velocidad'].append(msg.current_speed.motor_nr)
+        self.motorNR_data['control'].append(msg.current_control.motor_nr)
+        self.motorNR_data['error'].append(msg.current_error.motor_nr)
+        self.motorNR_data['setpoint'].append(msg.setpoint.motor_nr)
+        self.motorNR_data['velocidad_filtered'].append(msg.current_speed_filtered.motor_nr)
+
+
+        self.get_logger().info(f'Recibido: VelocidadFL={msg.current_speed.motor_fl}, ControlFL={msg.current_control.motor_fl}, ErrorFL={msg.current_error.motor_fl}')
+        self.get_logger().info(f'Recibido: VelocidadFR={msg.current_speed.motor_fr}, ControlFR={msg.current_control.motor_fr}, ErrorFR={msg.current_error.motor_fr}')
+        self.get_logger().info(f'Recibido: VelocidadRL={msg.current_speed.motor_nl}, ControlRL={msg.current_control.motor_nl}, ErrorRL={msg.current_error.motor_nl}')
+        self.get_logger().info(f'Recibido: VelocidadRR={msg.current_speed.motor_nr}, ControlRR={msg.current_control.motor_nr}, ErrorRR={msg.current_error.motor_nr}')
 
 
 class MotorController(Node):
@@ -89,7 +118,7 @@ def update_plot(node, ax, motor_data, canvas):
     ax.legend()
 
     canvas.draw()
-    canvas.get_tk_widget().after(100, update_plot, node, ax, motor_data, canvas)
+    canvas.get_tk_widget().after(200, update_plot, node, ax, motor_data, canvas)
 
 
 def main(args=None):
@@ -140,8 +169,11 @@ def main(args=None):
     ros_thread = threading.Thread(target=lambda: rclpy.spin(subscriber_node), daemon=True)
     ros_thread.start()
 
-    canvas_widget.after(100, update_plot, subscriber_node, axes[0][0], subscriber_node.motor1_data, canvas)
-    canvas_widget.after(100, update_plot, subscriber_node, axes[0][1], subscriber_node.motor2_data, canvas)
+    canvas_widget.after(200, update_plot, subscriber_node, axes[0][0], subscriber_node.motorFL_data, canvas)
+    canvas_widget.after(200, update_plot, subscriber_node, axes[0][1], subscriber_node.motorFR_data, canvas)
+
+    canvas_widget.after(200, update_plot, subscriber_node, axes[1][0], subscriber_node.motorNL_data, canvas)
+    canvas_widget.after(200, update_plot, subscriber_node, axes[1][1], subscriber_node.motorNR_data, canvas)
 
     root.mainloop()
     ros_thread.join()

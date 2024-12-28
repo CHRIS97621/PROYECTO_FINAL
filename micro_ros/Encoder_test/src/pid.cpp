@@ -59,6 +59,10 @@ void PID::reset() {
 float PID::compute(float current_value, float delta_time) {
     float error = setpoint_ - current_value;
 
+    if(abs(error)<0.5 && setpoint_ == 0){
+        return 0;
+    }
+
     signal_error_ =  error;
     integral_ += error;
     float derivative = error - previous_error_;

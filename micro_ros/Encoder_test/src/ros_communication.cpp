@@ -38,14 +38,28 @@ sensor_msgs__msg__JointState wheels_state_msg;
 std_msgs__msg__Float32MultiArray wheels_command_msg;
 
 //#define ledPin 32
-
-
-
 RosCommunication* instance_ros_comunication = nullptr; 
-MotorController* instance1 = nullptr;
-MotorController* instance2 = nullptr;
+MotorController* instanceFL = nullptr;
+MotorController* instanceFR = nullptr;
+MotorController* instanceNL = nullptr;
+MotorController* instanceNR = nullptr;
 
-RosCommunication::RosCommunication(): motorController1(nullptr), motorController2(nullptr){
+// Encoders pines
+struct MotorPin{
+  int encoder_A;
+  int encoder_B;
+  int pwm_IN1; 
+  int pwm_IN2; 
+  int channel_IN1; 
+  int channel_IN2;
+};
+
+MotorPin motorFL;
+MotorPin motorFR;
+MotorPin motorNL;
+MotorPin motorNR;
+
+RosCommunication::RosCommunication(): motorControllerFL(nullptr), motorControllerFR(nullptr),motorControllerNL(nullptr),motorControllerNR(nullptr){
     Serial.println("RosCommunication instance created.");
     instance_ros_comunication = this;
 
@@ -70,62 +84,140 @@ void RosCommunication::initialize(){
     rclc_support_init(&support, 0, NULL, &allocator);
     rclc_node_init_default(&node, "firmware", "", &support);
 
-    //pinMode(ledPin,OUTPUT);
-    /*MotorController(int pwm_pin, int dir_pin, int enable_pin, 
+
+
+    motorFL.encoder_A = 25;
+    motorFL.encoder_B = 26;
+    motorFL.pwm_IN1 = 16; 
+    motorFL.pwm_IN2 = 27; 
+    motorFL.channel_IN1 = 0; 
+    motorFL.channel_IN2 = 1; 
+
+    motorFR.encoder_A = 35;
+    motorFR.encoder_B = 34;
+    motorFR.pwm_IN1 = 19; 
+    motorFR.pwm_IN2 = 21; 
+    motorFR.channel_IN1 = 2; 
+    motorFR.channel_IN2 = 3;
+
+    motorNL.encoder_A = 32;
+    motorNL.encoder_B = 33;
+    motorNL.pwm_IN1 = 17; 
+    motorNL.pwm_IN2 = 18; 
+    motorNL.channel_IN1 = 4; 
+    motorNL.channel_IN2 = 5; 
+
+    motorNR.encoder_A = 36;
+    motorNR.encoder_B = 39;
+    motorNR.pwm_IN1 = 23; 
+    motorNR.pwm_IN2 = 22; 
+    motorNR.channel_IN1 = 6; 
+    motorNR.channel_IN2 = 7; 
+
+    /*MotorController(           int pwm_IN1, int pwm_IN1, 
+                                 int channel_IN1, int channel_IN2, 
                                  int encoder_pin_a, int encoder_pin_b, 
                                  float kp, float ki, float kd)*/
-
-    motorController1 = new MotorController(17, 4, 16, 0,   
-                                           18, 19,    
+    // motor front left
+    motorControllerFL = new MotorController(motorFL.pwm_IN1,     motorFL.pwm_IN2,
+                                            motorFL.channel_IN1, motorFL.channel_IN2,   
+                                            motorFL.encoder_A,   motorFL.encoder_B,    
+                                            200.0, 70.0, 1.0); 
+    // motor front rigth
+    motorControllerFR = new MotorController(motorFR.pwm_IN1, motorFR.pwm_IN2,
+                                            motorFR.channel_IN1, motorFR.channel_IN2,   
+                                            motorFR.encoder_A, motorFR.encoder_B,    
                                            200.0, 70.0, 1.0); 
-    motorController2 = new MotorController(13, 32, 33, 1,  
-                                           26, 27,    
+    // motor near left
+    motorControllerNL = new MotorController(motorNL.pwm_IN1,     motorNL.pwm_IN2,
+                                            motorNL.channel_IN1, motorNL.channel_IN2,   
+                                            motorNL.encoder_A,   motorNL.encoder_B,     
+                                           200.0, 70.0, 1.0);
+    // motor near right
+    motorControllerNR = new MotorController(motorNR.pwm_IN1,     motorNR.pwm_IN2,
+                                            motorNR.channel_IN1, motorNR.channel_IN2,   
+                                            motorNR.encoder_A,   motorNR.encoder_B,      
                                            200.0, 70.0, 1.0); 
 
 
 
-    pinMode(18, INPUT_PULLUP);
-    pinMode(19, INPUT_PULLUP);
-    pinMode(26, INPUT_PULLUP);
-    pinMode(27, INPUT_PULLUP);
-    attachInterrupt(18, isrA, CHANGE); 
-    attachInterrupt(19, isrB, CHANGE);
-    attachInterrupt(26, isrC, CHANGE); 
-    attachInterrupt(27, isrD, CHANGE);
+
+    pinMode(motorFL.encoder_A, INPUT_PULLUP);
+    pinMode(motorFL.encoder_B, INPUT_PULLUP);
+    pinMode(motorFR.encoder_A, INPUT_PULLUP);
+    pinMode(motorFR.encoder_B, INPUT_PULLUP);
+    pinMode(motorNL.encoder_A, INPUT_PULLUP);
+    pinMode(motorNL.encoder_B, INPUT_PULLUP);
+    pinMode(motorNR.encoder_A, INPUT_PULLUP);
+    pinMode(motorNR.encoder_B, INPUT_PULLUP);
+
+    attachInterrupt(motorFL.encoder_A, isrA1, CHANGE); 
+    attachInterrupt(motorFL.encoder_B, isrB1, CHANGE);
+
+    attachInterrupt(motorFR.encoder_A, isrB2, CHANGE); 
+    attachInterrupt(motorFR.encoder_B, isrA2, CHANGE);
+
+    attachInterrupt(motorNL.encoder_A, isrA3, CHANGE); 
+    attachInterrupt(motorNL.encoder_B, isrB3, CHANGE);
+
+    attachInterrupt(motorNR.encoder_A, isrA4, CHANGE); 
+    attachInterrupt(motorNR.encoder_B, isrB4, CHANGE);
 
 
     Serial.println("Encoder initialized");
 
-    motorController1->init();
-    instance1 = motorController1;
-    motorController2->init();
-    instance2 = motorController2;
+    motorControllerFL->init();
+    motorControllerFR->init();
+    motorControllerNL->init();
+    motorControllerNR->init();
+    instanceFL = motorControllerFL;
+    instanceFR = motorControllerFR;
+    instanceNL = motorControllerNL;
+    instanceNR = motorControllerNR;
 }
 // Función de interrupción para actualizar el contador de pulsos
-
-void IRAM_ATTR RosCommunication::isrA() {
-    if (instance1) {
-        instance1->encoder.updateA();
+// MOTOR FL
+void IRAM_ATTR RosCommunication::isrA1() {
+    if (instanceFL) {
+        instanceFL->encoder.updateA();
     }
 }
-
-// ISR estática para el pin B
-void IRAM_ATTR RosCommunication::isrB() {
-    if (instance1) {
-        instance1->encoder.updateB();
+void IRAM_ATTR RosCommunication::isrB1() {
+    if (instanceFL) {
+        instanceFL->encoder.updateB();
     }
 }
-
-void IRAM_ATTR RosCommunication::isrC() {
-    if (instance2) {
-        instance2->encoder.updateB();
+// MOTOR FR
+void IRAM_ATTR RosCommunication::isrA2() {
+    if (instanceFR) {
+        instanceFR->encoder.updateA();
     }
 }
-
-// ISR estática para el pin B
-void IRAM_ATTR RosCommunication::isrD() {
-    if (instance2) {
-        instance2->encoder.updateA();
+void IRAM_ATTR RosCommunication::isrB2() {
+    if (instanceFR) {
+        instanceFR->encoder.updateB();
+    }
+}
+// MOTOR NL
+void IRAM_ATTR RosCommunication::isrA3() {
+    if (instanceNL) {
+        instanceNL->encoder.updateA();
+    }
+}
+void IRAM_ATTR RosCommunication::isrB3() {
+    if (instanceNL) {
+        instanceNL->encoder.updateB();
+    }
+}
+// MOTOR NR
+void IRAM_ATTR RosCommunication::isrA4() {
+    if (instanceNR) {
+        instanceNR->encoder.updateA();
+    }
+}
+void IRAM_ATTR RosCommunication::isrB4() {
+    if (instanceNR) {
+        instanceNR->encoder.updateB();
     }
 }
 
@@ -238,27 +330,36 @@ void RosCommunication::set_vel_motors_callback(const void *msg_recv) {
     Serial.print("Recibiendo comandos de velocidad");
     if (msg != NULL and msg->data.size == MOTORS_COUNT)
     {
-   
-        instance_ros_comunication->motorController1->setTargetSpeed(msg->data.data[motor_left_front]);
-        instance_ros_comunication->motorController2->setTargetSpeed(msg->data.data[motor_right_front]);
-        instance_ros_comunication->motorController1->setTargetSpeed(msg->data.data[motor_left_rear]);
-        instance_ros_comunication->motorController2->setTargetSpeed(msg->data.data[motor_right_rear]);
+        instance_ros_comunication->motorControllerFL->setTargetSpeed(msg->data.data[motor_left_front]);
+        instance_ros_comunication->motorControllerFR->setTargetSpeed(msg->data.data[motor_right_front]);
+        instance_ros_comunication->motorControllerNL->setTargetSpeed(msg->data.data[motor_left_rear]);
+        instance_ros_comunication->motorControllerNR->setTargetSpeed(msg->data.data[motor_right_rear]);
     }
-    Serial.print("Velocidad seteada motor left_front ");
+    Serial.print("Velocidad seteada motor left front ");
     Serial.println(msg->data.data[motor_left_front]);
     Serial.print("Velocidad seteada motor right front ");
     Serial.println(msg->data.data[motor_right_front]);
+    Serial.print("Velocidad seteada motor left near ");
+    Serial.println(msg->data.data[motor_left_rear]);
+    Serial.print("Velocidad seteada motor right near ");
+    Serial.println(msg->data.data[motor_right_rear]);
 }
 
 void RosCommunication::set_pwm_motors_callback(const void *msg_recv) {
     const agro_interfaces__msg__Motors *data = (const agro_interfaces__msg__Motors *)msg_recv;
 
-    instance_ros_comunication->motorController1->motor.setPwm(data->motor1);
-    instance_ros_comunication->motorController2->motor.setPwm(data->motor2);
-    Serial.print("Pwm seteado motor1 ");
-    Serial.println(data->motor1);
-    Serial.print("Pwm seteado motor2 ");
-    Serial.println(data->motor2);
+    instance_ros_comunication->motorControllerFL->motor.setPwm(data->motor_fl);
+    instance_ros_comunication->motorControllerFR->motor.setPwm(data->motor_fr);
+    instance_ros_comunication->motorControllerNL->motor.setPwm(data->motor_nl);
+    instance_ros_comunication->motorControllerNR->motor.setPwm(data->motor_nr);
+    Serial.print("Pwm seteado motor FL ");
+    Serial.println(data->motor_fl);
+    Serial.print("Pwm seteado motor FR ");
+    Serial.println(data->motor_fr);
+    Serial.print("Pwm seteado motor NL ");
+    Serial.println(data->motor_nl);
+    Serial.print("Pwm seteado motor NR ");
+    Serial.println(data->motor_nr);
 }
 
 void RosCommunication::config_params_callback(const void *msg_recv) {
@@ -267,11 +368,15 @@ void RosCommunication::config_params_callback(const void *msg_recv) {
     float kp = data->kp;
     float ki = data->ki;
     float kd = data->kd;
-    instance_ros_comunication->motorController1->pid.setTunings(kp,ki,kd);
-    instance_ros_comunication->motorController1->encoder.lowPassFilter->setParam(data->alpha);
-    
-    instance_ros_comunication->motorController2->pid.setTunings(kp,ki,kd);
-    instance_ros_comunication->motorController2->encoder.lowPassFilter->setParam(data->alpha);
+
+    instance_ros_comunication->motorControllerFL->pid.setTunings(kp,ki,kd);
+    instance_ros_comunication->motorControllerFL->encoder.lowPassFilter->setParam(data->alpha);
+    instance_ros_comunication->motorControllerFR->pid.setTunings(kp,ki,kd);
+    instance_ros_comunication->motorControllerFR->encoder.lowPassFilter->setParam(data->alpha);
+    instance_ros_comunication->motorControllerNL->pid.setTunings(kp,ki,kd);
+    instance_ros_comunication->motorControllerNL->encoder.lowPassFilter->setParam(data->alpha);
+    instance_ros_comunication->motorControllerNR->pid.setTunings(kp,ki,kd);
+    instance_ros_comunication->motorControllerNR->encoder.lowPassFilter->setParam(data->alpha);
 
     Serial.print("Low pass filter set in ");
     Serial.println(data->alpha);
@@ -283,13 +388,17 @@ void RosCommunication::set_switch_control_callback(const void *msg_recv) {
     const std_msgs__msg__Float32 *data = (const std_msgs__msg__Float32 *)msg_recv;
     if(!data->data){
 
-        instance_ros_comunication->motorController1->disableControl();
-        instance_ros_comunication->motorController2->disableControl();
+        instance_ros_comunication->motorControllerFL->disableControl();
+        instance_ros_comunication->motorControllerFR->disableControl();
+        instance_ros_comunication->motorControllerNL->disableControl();
+        instance_ros_comunication->motorControllerNR->disableControl();
         Serial.println("Control desabilitado ");
     }
     else{
-        instance_ros_comunication->motorController1->enableControl();
-        instance_ros_comunication->motorController2->enableControl();
+        instance_ros_comunication->motorControllerFL->enableControl();
+        instance_ros_comunication->motorControllerFR->enableControl();
+        instance_ros_comunication->motorControllerNL->enableControl();
+        instance_ros_comunication->motorControllerNR->enableControl();
         Serial.println("Control habilitado ");
     }
 
@@ -298,8 +407,10 @@ void RosCommunication::set_switch_control_callback(const void *msg_recv) {
 void  RosCommunication::timer_callback(rcl_timer_t *timer, int64_t last_call_time) {
     RCLC_UNUSED(last_call_time);
     if (timer != NULL) {
-        pulse_counts_msg.motor1 = instance_ros_comunication->motorController1->encoder.getCount();
-        pulse_counts_msg.motor2 = instance_ros_comunication->motorController2->encoder.getCount();
+        pulse_counts_msg.motor_fl = instance_ros_comunication->motorControllerFL->encoder.getCount();
+        pulse_counts_msg.motor_fr = instance_ros_comunication->motorControllerFR->encoder.getCount();
+        pulse_counts_msg.motor_nl = instance_ros_comunication->motorControllerNL->encoder.getCount();
+        pulse_counts_msg.motor_nr = instance_ros_comunication->motorControllerNR->encoder.getCount();
         RCSOFTCHECK(rcl_publish(&current_pulses_counts_pub, &pulse_counts_msg, NULL));
     }
 
@@ -317,34 +428,62 @@ void  RosCommunication::timer_callback_control(rcl_timer_t *timer, int64_t last_
     //Serial.print("El delta de tiempo del control es ");
     //Serial.println(deltaTime);
 
-    //motor1
-    instance_ros_comunication->motorController1->update();
-    instance_ros_comunication->motorController2->update();
+    instance_ros_comunication->motorControllerFL->update();
+    instance_ros_comunication->motorControllerFR->update();
+    instance_ros_comunication->motorControllerNL->update();
+    instance_ros_comunication->motorControllerNR->update();
 
-    float current_vel1 =  instance_ros_comunication->motorController1->encoder.getSpeed();
-    float current_vel_filtered1 =  instance_ros_comunication->motorController1->encoder.getSpeedFiltered();
-    float current_control1 =  instance_ros_comunication->motorController1->pid.getCurrentSignalControl();
-    float current_error1  = instance_ros_comunication->motorController1->pid.getCurrentSignalError();
-    float setpoint1= instance_ros_comunication->motorController1->pid.getSetpoint();
+    //motor FL
+    float current_vel_FL =  instance_ros_comunication->motorControllerFL->encoder.getSpeed();
+    float current_vel_filtered_FL =  instance_ros_comunication->motorControllerFL->encoder.getSpeedFiltered();
+    float current_control_FL =  instance_ros_comunication->motorControllerFL->pid.getCurrentSignalControl();
+    float current_error_FL  = instance_ros_comunication->motorControllerFL->pid.getCurrentSignalError();
+    float setpoint_FL= instance_ros_comunication->motorControllerFL->pid.getSetpoint();
 
-    motor_status_control_msg.current_speed.motor1 = current_vel1;
-    motor_status_control_msg.current_control.motor1 = current_control1;
-    motor_status_control_msg.current_error.motor1 = current_error1;
-    motor_status_control_msg.current_speed_filtered.motor1 = current_vel_filtered1;
-    motor_status_control_msg.setpoint.motor1 = setpoint1;
+    motor_status_control_msg.current_speed.motor_fl = current_vel_FL;
+    motor_status_control_msg.current_control.motor_fl = current_control_FL;
+    motor_status_control_msg.current_error.motor_fl = current_error_FL;
+    motor_status_control_msg.current_speed_filtered.motor_fl = current_vel_filtered_FL;
+    motor_status_control_msg.setpoint.motor_fl= setpoint_FL;
 
-    //motor2
-    float current_vel2 =  instance_ros_comunication->motorController2->encoder.getSpeed();
-    float current_vel_filtered2 =  instance_ros_comunication->motorController2->encoder.getSpeedFiltered();
-    float current_control2 =  instance_ros_comunication->motorController2->pid.getCurrentSignalControl();
-    float current_error2  = instance_ros_comunication->motorController2->pid.getCurrentSignalError();
-    float setpoint2= instance_ros_comunication->motorController2->pid.getSetpoint();
+    //motor FR
+    float current_vel_FR =  instance_ros_comunication->motorControllerFR->encoder.getSpeed();
+    float current_vel_filtered_FR =  instance_ros_comunication->motorControllerFR->encoder.getSpeedFiltered();
+    float current_control_FR =  instance_ros_comunication->motorControllerFR->pid.getCurrentSignalControl();
+    float current_error_FR  = instance_ros_comunication->motorControllerFR->pid.getCurrentSignalError();
+    float setpoint_FR= instance_ros_comunication->motorControllerFR->pid.getSetpoint();
 
-    motor_status_control_msg.current_speed.motor2 = current_vel2;
-    motor_status_control_msg.current_control.motor2 = current_control2;
-    motor_status_control_msg.current_error.motor2 = current_error2;
-    motor_status_control_msg.current_speed_filtered.motor2 = current_vel_filtered2;
-    motor_status_control_msg.setpoint.motor2 = setpoint2;
+    motor_status_control_msg.current_speed.motor_fr = current_vel_FR;
+    motor_status_control_msg.current_control.motor_fr = current_control_FR;
+    motor_status_control_msg.current_error.motor_fr = current_error_FR;
+    motor_status_control_msg.current_speed_filtered.motor_fr = current_vel_filtered_FR;
+    motor_status_control_msg.setpoint.motor_fr = setpoint_FR;
+
+    //motor NL
+    float current_vel_NL =  instance_ros_comunication->motorControllerNL->encoder.getSpeed();
+    float current_vel_filtered_NL =  instance_ros_comunication->motorControllerNL->encoder.getSpeedFiltered();
+    float current_control_NL =  instance_ros_comunication->motorControllerNL->pid.getCurrentSignalControl();
+    float current_error_NL  = instance_ros_comunication->motorControllerNL->pid.getCurrentSignalError();
+    float setpoint_NL= instance_ros_comunication->motorControllerNL->pid.getSetpoint();
+
+    motor_status_control_msg.current_speed.motor_nl = current_vel_NL;
+    motor_status_control_msg.current_control.motor_nl = current_control_NL;
+    motor_status_control_msg.current_error.motor_nl = current_error_NL;
+    motor_status_control_msg.current_speed_filtered.motor_nl = current_vel_filtered_NL;
+    motor_status_control_msg.setpoint.motor_nl= setpoint_NL;
+
+    //motor NR
+    float current_vel_NR =  instance_ros_comunication->motorControllerNR->encoder.getSpeed();
+    float current_vel_filtered_NR =  instance_ros_comunication->motorControllerNR->encoder.getSpeedFiltered();
+    float current_control_NR =  instance_ros_comunication->motorControllerNR->pid.getCurrentSignalControl();
+    float current_error_NR  = instance_ros_comunication->motorControllerNR->pid.getCurrentSignalError();
+    float setpoint_NR= instance_ros_comunication->motorControllerNR->pid.getSetpoint();
+
+    motor_status_control_msg.current_speed.motor_nr = current_vel_NR;
+    motor_status_control_msg.current_control.motor_nr = current_control_NR;
+    motor_status_control_msg.current_error.motor_nr = current_error_NR;
+    motor_status_control_msg.current_speed_filtered.motor_nr = current_vel_filtered_NR;
+    motor_status_control_msg.setpoint.motor_nr = setpoint_NR;
 
     RCSOFTCHECK(rcl_publish(&control_state_pub, &motor_status_control_msg, NULL));
     instance_ros_comunication->updatWheelsStates();
@@ -366,15 +505,15 @@ void RosCommunication::error_loop() {
 
 void RosCommunication::updatWheelsStates(){
     float current_position[MOTORS_COUNT];
-    current_position[motor_left_front] = instance_ros_comunication->motorController1->encoder.getPosition();
-    current_position[motor_right_front] = instance_ros_comunication->motorController2->encoder.getPosition();
-    current_position[motor_left_rear] = instance_ros_comunication->motorController1->encoder.getPosition();
-    current_position[motor_right_rear] = instance_ros_comunication->motorController2->encoder.getPosition();
+    current_position[motor_left_front] = instance_ros_comunication->motorControllerFL->encoder.getPosition();
+    current_position[motor_right_front] = instance_ros_comunication->motorControllerFR->encoder.getPosition();
+    current_position[motor_left_rear] = instance_ros_comunication->motorControllerNL->encoder.getPosition();
+    current_position[motor_right_rear] = instance_ros_comunication->motorControllerNR->encoder.getPosition();
     float current_velocity[MOTORS_COUNT];
-    current_velocity[motor_left_front] = instance_ros_comunication->motorController1->encoder.getSpeedFiltered();
-    current_velocity[motor_right_front] = instance_ros_comunication->motorController2->encoder.getSpeedFiltered();
-    current_velocity[motor_left_rear] = instance_ros_comunication->motorController1->encoder.getSpeedFiltered();
-    current_velocity[motor_right_rear] = instance_ros_comunication->motorController2->encoder.getSpeedFiltered();
+    current_velocity[motor_left_front] = instance_ros_comunication->motorControllerFL->encoder.getSpeedFiltered();
+    current_velocity[motor_right_front] = instance_ros_comunication->motorControllerFR->encoder.getSpeedFiltered();
+    current_velocity[motor_left_rear] = instance_ros_comunication->motorControllerNL->encoder.getSpeedFiltered();
+    current_velocity[motor_right_rear] = instance_ros_comunication->motorControllerNR->encoder.getSpeedFiltered();
     for (auto i = 0u; i < MOTORS_COUNT; ++i)
     {   
         wheels_state_msg.position.data[i] = current_position[i];

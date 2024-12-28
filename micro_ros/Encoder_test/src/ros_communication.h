@@ -24,14 +24,12 @@
 
 #include "vector"
 
-#define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)) { error_loop(); }}
-#define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)) {} }
-
-
 #include <rmw_microros/rmw_microros.h>
 #include <micro_ros_utilities/string_utilities.h>
-#include <sensor_msgs/msg/joint_state.h>
-#include <std_msgs/msg/float32_multi_array.h>
+
+
+#define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)) { error_loop(); }}
+#define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)) {} }
 
 // Motors setup
 #define MOTOR_FR MOTOR1
@@ -88,13 +86,19 @@ class RosCommunication{
 
         void error_loop();
 
-        MotorController* motorController1;
-        MotorController* motorController2;
+        MotorController* motorControllerFL;
+        MotorController* motorControllerFR;
+        MotorController* motorControllerNL;
+        MotorController* motorControllerNR;
 
-        static void IRAM_ATTR isrA();
-        static void IRAM_ATTR isrB();
-        static void IRAM_ATTR isrC();
-        static void IRAM_ATTR isrD();
+        static void IRAM_ATTR isrA1();
+        static void IRAM_ATTR isrB1();
+        static void IRAM_ATTR isrA2();
+        static void IRAM_ATTR isrB2();
+        static void IRAM_ATTR isrA3();
+        static void IRAM_ATTR isrB3();
+        static void IRAM_ATTR isrA4();
+        static void IRAM_ATTR isrB4();
 
         void updatWheelsStates();
         void fill_wheels_state_msg(sensor_msgs__msg__JointState* msg);

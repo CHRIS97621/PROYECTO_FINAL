@@ -22,7 +22,7 @@ public:
     
     
     // Constructor
-    MotorController(int pwm_pin, int dir_pin, int enable_pin, int channel,
+    MotorController(int dir_pin1, int dir_pin2, int channel1,int channel2,
                     int encoder_pin_a, int encoder_pin_b, 
                     float kp, float ki, float kd);
     // Métodos públicos

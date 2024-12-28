@@ -89,6 +89,8 @@ CallbackReturn AgroSystem::on_init(const hardware_interface::HardwareInfo& hardw
   std::stringstream velocity_command_joint_order_stream(velocity_command_joint_order_raw);
 
   std::string joint_name;
+
+  
   // inserto los comandos en un vector, respetando el orden defnido en los parámetros
   while (getline(velocity_command_joint_order_stream, joint_name, ','))
   {

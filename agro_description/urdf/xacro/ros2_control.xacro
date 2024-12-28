@@ -12,9 +12,9 @@
                 <!-- order of velocity commands to be published in motors_cmd Float32MultiArray msg -->
                 <param name="velocity_command_joint_order">
                     front_left_joint,
-                    near_left_joint,
                     front_right_joint,
-                    near_right_joint
+                    near_left_joint,
+                    near_right_joint,
                 </param>
             </hardware>
 

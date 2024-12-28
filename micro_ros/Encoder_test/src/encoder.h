@@ -2,6 +2,8 @@
 #define ENCODER_H
 
 #include <Arduino.h>
+//#include "ESP32Encoder.h"
+
 #include "low_filter.h"
 #include "memory"
 
