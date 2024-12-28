@@ -172,8 +172,8 @@ def main(args=None):
     canvas_widget.after(200, update_plot, subscriber_node, axes[0][0], subscriber_node.motorFL_data, canvas)
     canvas_widget.after(200, update_plot, subscriber_node, axes[0][1], subscriber_node.motorFR_data, canvas)
 
-    canvas_widget.after(200, update_plot, subscriber_node, axes[1][0], subscriber_node.motorNL_data, canvas)
-    canvas_widget.after(200, update_plot, subscriber_node, axes[1][1], subscriber_node.motorNR_data, canvas)
+    #canvas_widget.after(200, update_plot, subscriber_node, axes[1][0], subscriber_node.motorNL_data, canvas)
+    #canvas_widget.after(200, update_plot, subscriber_node, axes[1][1], subscriber_node.motorNR_data, canvas)
 
     root.mainloop()
     ros_thread.join()
