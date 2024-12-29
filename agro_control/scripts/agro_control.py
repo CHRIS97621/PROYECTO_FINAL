@@ -114,7 +114,7 @@ def update_plot(node, ax, motor_data, canvas):
     ax.legend()
     ax.set_xlabel('Tiempo (s)')
     ax.set_ylabel('Valor')
-    ax.set_ylim(-40, 40)
+    ax.set_ylim(-5, 5)
     ax.legend()
 
     canvas.draw()

@@ -141,5 +141,5 @@ def generate_launch_description():
         ros_bridge_node,
         joint_state_broadcaster_spawner,
         delay_robot_controller_spawner_after_joint_state_broadcaster_spawner,
-        #delay_ekf_after_robot_controller_spawner
+        delay_ekf_after_robot_controller_spawner
     ])
