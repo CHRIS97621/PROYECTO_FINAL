@@ -23,6 +23,9 @@ install(PROGRAMS
   scripts/plot3_odometry.py
   scripts/speed_ekf.py
   scripts/speed_ekf2.py
+  scripts/test_vangular.py
+  scripts/test_square.py
+  scripts/test_rotate.py
 
   #firmware scripts
   scripts/plot_control.py

@@ -25,7 +25,7 @@ class GPSNode(Node):
         self.timer = self.create_timer(timer_period, self.GPS_read)
         
         # Configuración del puerto serie (GPS)
-        port = '/dev/ttyUSB1'  # Asegúrate de que este sea el puerto correcto
+        port = '/dev/ttyUSB0'  # Asegúrate de que este sea el puerto correcto
         baud = 9600
         try:
             self.ser = serial.Serial(port, baud, timeout=2)
@@ -82,7 +82,7 @@ class GPSNode(Node):
         msg = NavSatFix()
         msg.header = Header()
         msg.header.stamp = self.get_clock().now().to_msg()
-        msg.header.frame_id = 'map'  # Correcto: el GPS da posición absoluta
+        msg.header.frame_id = 'gps_link'  # Correcto: el GPS da posición absoluta
         
         msg.latitude = lat
         msg.longitude = lon
@@ -113,7 +113,7 @@ class GPSNode(Node):
         self.cartesian_publisher_.publish(cartesian_msg)
 
         # Publicar transformación TF de `map` a `base_link`
-        self.publish_tf(x, y, alt)
+        #self.publish_tf(x, y, alt)
 
         self.get_logger().info(f"Published GPS data: lat={lat}, lon={lon}, alt={alt}")
         self.get_logger().info(f"Published Cartesian GPS data: x={x}, y={y}, z={alt}")
@@ -123,7 +123,7 @@ class GPSNode(Node):
         t = TransformStamped()
         t.header.stamp = self.get_clock().now().to_msg()
         t.header.frame_id = 'map'  # GPS da una posición en el marco global `map`
-        t.child_frame_id = 'base_link'  # Transformación hacia `base_link`
+        t.child_frame_id = 'base_footprint'  # Transformación hacia `base_link`'gps_link''base_footprint'
 
         # Establecer la traslación en las coordenadas calculadas
         t.transform.translation.x = x

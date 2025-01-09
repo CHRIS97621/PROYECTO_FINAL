@@ -32,7 +32,7 @@ def generate_launch_description():
 
     arg_use_sim = DeclareLaunchArgument(
         'use_sim',
-        default_value= "false",
+        default_value= "true",
         description='Use simlation or not'
     )
 

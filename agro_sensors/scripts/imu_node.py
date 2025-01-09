@@ -22,7 +22,7 @@ class IMUNode(Node):
 
     def __init__(self):
         super().__init__('imu_node')
-        self.declare_parameter('port', '/dev/ttyUSB2')
+        self.declare_parameter('port', '/dev/ttyUSB1')
         self.declare_parameter('baud', 9600)
         port = self.get_parameter('port').get_parameter_value().string_value
         baud = self.get_parameter('baud').get_parameter_value().integer_value
@@ -75,9 +75,9 @@ class IMUNode(Node):
         imu_msg.linear_acceleration.z = acc[2]
 
         # Velocidad angular (rad/s)
-        imu_msg.angular_velocity.x = gyro[0]
-        imu_msg.angular_velocity.y = gyro[1]
-        imu_msg.angular_velocity.z = gyro[2]
+        imu_msg.angular_velocity.x = gyro[0] * 2 * math.pi/360.0
+        imu_msg.angular_velocity.y = gyro[1]* 2 * math.pi/360.0
+        imu_msg.angular_velocity.z = gyro[2]* 2 * math.pi/360.0
 
         # Orientación en cuaterniones
         imu_msg.orientation.x = quaternion[0]
@@ -87,7 +87,7 @@ class IMUNode(Node):
 
         # Header: incluye el frame_id
         imu_msg.header.stamp = self.get_clock().now().to_msg()
-        imu_msg.header.frame_id = "base_link"  # Correcto: el IMU está en base_link
+        imu_msg.header.frame_id = "imu_link"  # Correcto: el IMU está en base_link
 
         # Publicar el mensaje
         self.imu_publisher.publish(imu_msg)
@@ -97,8 +97,8 @@ class IMUNode(Node):
         t = TransformStamped()
 
         t.header.stamp = self.get_clock().now().to_msg()
-        t.header.frame_id = 'odom'  # Puedes usar 'map' si es un frame absoluto
-        t.child_frame_id = 'base_link'
+        t.header.frame_id = 'base_footprint'  # Puedes usar 'map' si es un frame absoluto
+        t.child_frame_id = 'imu_link'
 
         # Posición y orientación
         t.transform.translation.x = 0.0
