@@ -24,8 +24,12 @@ install(PROGRAMS
   scripts/speed_ekf.py
   scripts/speed_ekf2.py
   scripts/test_vangular.py
+  scripts/test_vangular2.py
   scripts/test_square.py
-  scripts/test_rotate.py
+  scripts/test_square_ekf.py
+  scripts/test_square_ekf2.py
+  scripts/test_rotate_odom.py
+  scripts/navegation_ekf_gps.py
 
   #firmware scripts
   scripts/plot_control.py

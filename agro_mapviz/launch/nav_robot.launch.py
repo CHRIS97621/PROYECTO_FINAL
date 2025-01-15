@@ -32,6 +32,6 @@ def generate_launch_description():
 
     return LaunchDescription([
         sim_launch,
-        navigation_launch,
+        #navigation_launch,
         mapviz_launch,
     ])

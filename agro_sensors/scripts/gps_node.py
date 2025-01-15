@@ -14,7 +14,7 @@ class GPSNode(Node):
         super().__init__('gps_node')
         
         # Publicadores para datos GPS
-        self.publisher_ = self.create_publisher(NavSatFix, 'gps/fix', 10)
+        self.publisher_ = self.create_publisher(NavSatFix, 'gps/raw', 10)
         self.cartesian_publisher_ = self.create_publisher(Point, 'gps/cartesian', 10)
 
         # TF broadcaster para publicar las transformaciones entre `map` y `base_link`
