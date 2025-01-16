@@ -29,6 +29,7 @@ install(PROGRAMS
   scripts/test_square_ekf.py
   scripts/test_square_ekf2.py
   scripts/test_rotate_odom.py
+  scripts/test_line_ekf.py
   scripts/navegation_ekf_gps.py
 
   #firmware scripts

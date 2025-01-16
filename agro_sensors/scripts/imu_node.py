@@ -22,7 +22,7 @@ class IMUNode(Node):
 
     def __init__(self):
         super().__init__('imu_node')
-        self.declare_parameter('port', '/dev/ttyUSB1')
+        self.declare_parameter('port', '/dev/ttyUSB0')
         self.declare_parameter('baud', 9600)
         port = self.get_parameter('port').get_parameter_value().string_value
         baud = self.get_parameter('baud').get_parameter_value().integer_value
