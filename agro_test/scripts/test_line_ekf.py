@@ -39,16 +39,16 @@ class StraightMover(Node):
         self.integral_dist = 0.0
 
         # Parámetros del control PI para orientación
-        self.kp_yaw = 2.0
+        self.kp_yaw = 1.0
         self.ki_yaw = 0.0
         self.integral_yaw = 0.0
         
         # Velocidades máximas para seguridad
         self.max_lin_vel = 0.5   # m/s
-        self.max_ang_vel = 1.5   # rad/s
+        self.max_ang_vel = 1.0  # rad/s
 
         # Distancia objetivo (2 metros en línea recta)
-        self.distance_goal = 2.0
+        self.distance_goal = 1.0
 
         # Banderas y valores para la lógica del movimiento
         self.movement_started = False
@@ -151,7 +151,7 @@ class StraightMover(Node):
         angular_speed = max(min(angular_speed, self.max_ang_vel), -self.max_ang_vel)
 
         # 6) Verificar si ya recorrió los 2 metros (con un pequeño umbral)
-        if error_dist < 0.05:
+        if error_dist < 0.03:
             # Movimiento completado
             self.get_logger().info("Movimiento completado. Deteniendo el robot.")
             self.movement_completed = True

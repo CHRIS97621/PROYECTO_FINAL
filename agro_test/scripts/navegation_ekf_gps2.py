@@ -108,9 +108,9 @@ class GPSGoalNavigation(Node):
 
             # --- CONTROL DE VELOCIDAD ---
             # Ajusta estos parámetros para reducir giros bruscos y velocidades altas
-            K_ang = 0.5       # Ganancia angular reducida (antes era 1.0)
-            K_lin = 0.3       # Ganancia lineal más baja (antes era 0.5)
-            max_ang_vel = 0.4 # Máx. velocidad angular menor (antes 0.8)
+            K_ang = 1.0      # Ganancia angular reducida (antes era 1.0)
+            K_lin = 0.5      # Ganancia lineal más baja (antes era 0.5)
+            max_ang_vel = 0.8 # Máx. velocidad angular menor (antes 0.8)
             max_lin_vel = 0.5 # Podrías bajarlo si deseas aún menos velocidad lineal
 
             # Distancia "efectiva" para el control lineal

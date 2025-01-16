@@ -38,13 +38,13 @@ class SquareMover(Node):
         self.integral_dist = 0.0
 
         # Parámetros del control PI para orientación
-        self.kp_yaw = 2.0
+        self.kp_yaw = 1.0
         self.ki_yaw = 0.0
         self.integral_yaw = 0.0
         
         # Velocidades máximas para seguridad
         self.max_lin_vel = 0.5    # m/s
-        self.max_ang_vel = 1.5    # rad/s
+        self.max_ang_vel = 1.0  # rad/s
 
         # Máquina de estados para cada lado del cuadrado:
         # - 2 pasos por lado: moverse 1 m, girar 90°
@@ -203,7 +203,7 @@ class SquareMover(Node):
         angular_speed = max(min(angular_speed, self.max_ang_vel), -self.max_ang_vel)
 
         # 4) Condición para terminar el giro
-        if abs(error_yaw) < 0.05:  # Umbral de ~3 grados
+        if abs(error_yaw) < 0.03:  # Umbral de ~3 grados
             # Giro completado
             self.get_logger().info(f"Giro completado.")
             # Pasamos a la siguiente arista del cuadrado
