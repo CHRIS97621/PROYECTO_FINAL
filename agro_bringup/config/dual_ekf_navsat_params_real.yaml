@@ -3,7 +3,7 @@
 ekf_filter_node_odom:
   ros__parameters:
     use_sim_time: false
-    frequency: 20.0
+    frequency: 10.0
     sensor_timeout: 0.05
     two_d_mode: true
 
@@ -27,7 +27,7 @@ ekf_filter_node_odom:
     imu0_queue_size: 5
     imu0_nodelay: true
     imu0_differential: false
-    imu0_relative: true
+    imu0_relative: false
     imu0_remove_gravitational_acceleration: true
 
 
@@ -41,7 +41,7 @@ ekf_filter_node_odom:
     odom0_queue_size: 2
     odom0_nodelay: true
     odom0_differential: false
-    odom0_relative: true
+    odom0_relative: false
 
 
     reset_on_time_jump: false
@@ -55,13 +55,13 @@ ekf_filter_node_odom:
                                 0.0,   0.0,   5e-3,  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,
                                 0.0,   0.0,   0.0,   1e-3,  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,
                                 0.0,   0.0,   0.0,   0.0,   1e-3,  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,
-                                0.0,   0.0,   0.0,   0.0,   0.0,   0.1,  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,
+                                0.0,   0.0,   0.0,   0.0,   0.0,   1e-3,  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,
                                 0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   3e-3,  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,
                                 0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   3e-3,  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,
                                 0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   3e-3,  0.0,   0.0,   0.0,   0.0,   0.0,   0.0,
                                 0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   4e-2,  0.0,   0.0,   0.0,   0.0,   0.0,
                                 0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   4e-2,  0.0,   0.0,   0.0,   0.0,
-                                0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.1,  0.0,   0.0,   0.0,
+                                0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   4e-2,  0.0,   0.0,   0.0,
                                 0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   1e-5,  0.0,   0.0,
                                 0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   1e-5,  0.0,
                                 0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   0.0,   1e-5]
@@ -69,7 +69,7 @@ ekf_filter_node_odom:
 
 ekf_filter_node_map:
   ros__parameters:
-    frequency: 20.0
+    frequency: 10.0
     two_d_mode: true  # Recommended to use 2d mode for nav2 in mostly planar environments
     print_diagnostics: true
     debug: false
@@ -98,11 +98,11 @@ ekf_filter_node_map:
     odom0_relative: false
 
     odom1: odometry/gps
-    odom1_config: [true,  true,  false,
+    odom1_config: [false,  false,  false,
                   false, false, false,
+                  true, true, false,
                   false, false, false,
-                  false, false, false,
-                  false, false, false]
+                  true, true, false]
     odom1_queue_size: 10
     odom1_differential: false
     odom1_relative: false

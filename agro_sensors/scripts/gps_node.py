@@ -25,7 +25,7 @@ class GPSNode(Node):
         self.timer = self.create_timer(timer_period, self.GPS_read)
         
         # Configuración del puerto serie (GPS)
-        port = '/dev/ttyUSB0'  # Asegúrate de que este sea el puerto correcto
+        port = '/dev/ttyUSB2'  # Asegúrate de que este sea el puerto correcto
         baud = 9600
         try:
             self.ser = serial.Serial(port, baud, timeout=2)

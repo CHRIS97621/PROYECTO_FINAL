@@ -52,6 +52,6 @@ def generate_launch_description():
 
     return LaunchDescription([
         ekf_local,
-        #ekf_global,
-        #navsat_transform,
+        ekf_global,
+        navsat_transform,
     ])
